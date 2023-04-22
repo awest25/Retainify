@@ -31,6 +31,7 @@ dependencies:
   flutter:
     sdk: flutter
   intl: ^0.17.0
+  intl: ^0.17.0
   flutter_speed_dial: ^3.0.5
 
 

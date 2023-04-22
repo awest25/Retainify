@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:retainify/screens/NotesScreen.dart';
+import 'package:retainify/screens/ReflectScreen.dart';
 
 class ReviewScreen extends StatefulWidget {
   final List<String> questions;
-
   const ReviewScreen({super.key, required this.questions});
 
   @override
@@ -108,7 +108,12 @@ class _ReviewScreenState extends State<ReviewScreen> {
             Visibility(
                 visible: _finishIsShow,
                 child: TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const ReflectScreen()));
+                  },
                   child: const Text('Finish'),
                 ))
           ],

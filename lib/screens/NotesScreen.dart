@@ -11,6 +11,7 @@ class NotesScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(title: const Text("Notes")),
+        // TODO: populate the body with info from the database (Note title, DateTime it was imported)
         body: Container(
             child: ListView(children: [
           _tile(context, "Physics - Velocity and Displacement",

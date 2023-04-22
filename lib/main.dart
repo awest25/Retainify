@@ -19,7 +19,7 @@ UserNote? userNote;
 
 void main() async {
   // DELETE THE FOLLOWING 5 LINES
-    await Hive.initFlutter();
+  await Hive.initFlutter();
   Hive.registerAdapter<UserNote>(UserNoteAdapter());
   Hive.registerAdapter<User>(UserAdapter());
   Hive.registerAdapter<Question>(QuestionAdapter());

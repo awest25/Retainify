@@ -14,10 +14,14 @@ class NotesScreen extends StatelessWidget {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => ReviewScreen(
-                                    question:
-                                        'Who was the first President of the United States?',
-                                  )));
+                              builder: (context) =>
+                                  const ReviewScreen(questions: [
+                                    'Who was the first President of the United States?',
+                                    'Who was the second President of the United States?',
+                                    'Who was the third President of the United States?',
+                                    'Who was the fourth President of the United States?',
+                                    'Who was the fifth President of the United States?',
+                                  ])));
                     },
                     child: const Text("Review Screen")))));
   }

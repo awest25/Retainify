@@ -12,8 +12,11 @@ class ReviewScreen extends StatefulWidget {
 
 class _ReviewScreenState extends State<ReviewScreen> {
   int currentQuestionIndex = 0;
-  String? currentAnswer;
+  List<String> answers = ['', '', '', '', ''];
   var txtField = TextEditingController();
+  bool _leftIsShow = false;
+  bool _rightIsShow = true;
+  bool _finishIsShow = false;
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +38,7 @@ class _ReviewScreenState extends State<ReviewScreen> {
               controller: txtField,
               onChanged: (value) {
                 setState(() {
-                  currentAnswer = value;
+                  answers[currentQuestionIndex] = value;
                 });
               },
               decoration: const InputDecoration(
@@ -44,37 +47,70 @@ class _ReviewScreenState extends State<ReviewScreen> {
             ),
             const SizedBox(height: 16.0),
             Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
-              IconButton(
-                iconSize: 50,
-                icon: const Icon(Icons.arrow_left),
-                onPressed: () {
-                  // Save the current answer
-                  // TODO: Implement this functionality
+              Visibility(
+                visible: _leftIsShow,
+                maintainSize: true,
+                maintainAnimation: true,
+                maintainState: true,
+                child: IconButton(
+                  iconSize: 50,
+                  icon: const Icon(Icons.arrow_left),
+                  onPressed: () {
+                    // Save the current answer
+                    // TODO: Implement this functionality
 
-                  // Move to the next question
-                  setState(() {
-                    currentQuestionIndex--;
-                    currentAnswer = '';
-                    txtField.text = '';
-                  });
-                },
+                    // Move to the next question
+                    setState(() {
+                      currentQuestionIndex--;
+                      txtField.text = answers[currentQuestionIndex];
+                      txtField.selection = TextSelection.fromPosition(
+                          TextPosition(offset: txtField.text.length));
+                      if (currentQuestionIndex == 0) {
+                        _leftIsShow = false;
+                      }
+                      if (currentQuestionIndex != 4) {
+                        _rightIsShow = true;
+                      }
+                    });
+                  },
+                ),
               ),
-              IconButton(
-                iconSize: 50,
-                icon: const Icon(Icons.arrow_right),
-                onPressed: () {
-                  // Save the current answer
-                  // TODO: Implement this functionality
+              Visibility(
+                visible: _rightIsShow,
+                maintainSize: true,
+                maintainAnimation: true,
+                maintainState: true,
+                child: IconButton(
+                  iconSize: 50,
+                  icon: const Icon(Icons.arrow_right),
+                  onPressed: () {
+                    // Save the current answer
+                    // TODO: Implement this functionality
 
-                  // Move to the next question
-                  setState(() {
-                    currentQuestionIndex++;
-                    currentAnswer = '';
-                    txtField.text = '';
-                  });
-                },
-              ),
-            ])
+                    // Move to the next question
+                    setState(() {
+                      currentQuestionIndex++;
+                      txtField.text = answers[currentQuestionIndex];
+                      txtField.selection = TextSelection.fromPosition(
+                          TextPosition(offset: txtField.text.length));
+                      _leftIsShow = true;
+                      if (currentQuestionIndex == 4) {
+                        _rightIsShow = false;
+                        _finishIsShow = true;
+                      } else {
+                        _rightIsShow = true;
+                      }
+                    });
+                  },
+                ),
+              )
+            ]),
+            Visibility(
+                visible: _finishIsShow,
+                child: TextButton(
+                  onPressed: () {},
+                  child: const Text('Finish'),
+                ))
           ],
         ),
       ),

@@ -3,10 +3,11 @@ import 'package:http/http.dart' as http;
 
 // Create a structure to represent a page ID and created time pair
 class NotionPage {
+  String name;
   String id;
   DateTime createdTime;
 
-  NotionPage({required this.id, required this.createdTime});
+  NotionPage({required this.name, required this.id, required this.createdTime});
 }
 
 // Database Query
@@ -27,7 +28,11 @@ Future<List<NotionPage>> fetchPagesFromNotion(String databaseId) async {
   List<NotionPage> notionPages = [];
   for (var page in json.decode(response.body)['results']) {
     notionPages.add(NotionPage(
-        id: page['id'], createdTime: DateTime.parse(page['created_time'])));
+        name: page['properties']['Name']['title'].isEmpty
+            ? ''
+            : page['properties']['Name']['title'][0]['plain_text'],
+        id: page['id'],
+        createdTime: DateTime.parse(page['created_time'])));
   }
 
   if (response.statusCode == 200) {
@@ -39,6 +44,7 @@ Future<List<NotionPage>> fetchPagesFromNotion(String databaseId) async {
 }
 
 // Fetch Block Children
+// Supported types: paragraph, callout, equation (BUT it just says "expression"), heading_3, heading_2, heading_1, code
 Future<String> fetchTextFromPage(String pageID) async {
   var headers = {
     'Authorization':

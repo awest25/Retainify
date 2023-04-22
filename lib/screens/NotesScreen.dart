@@ -25,24 +25,28 @@ class NotesScreen extends StatelessWidget {
           backgroundColor: Colors.blue,
           children: [
             SpeedDialChild(
-                child: Icon(Icons.edit),
+                child: const Icon(Icons.edit),
                 label: "New Note",
                 // TODO: make this redirect to the NewNoteScreen
                 onTap: () {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const ReviewScreen()));
+                          builder: (context) => const ReviewScreen(
+                                questions: [],
+                              )));
                 }),
             SpeedDialChild(
-                child: Icon(CustomIcons.notion_logo),
+                child: const Icon(CustomIcons.notion_logo),
                 label: "New Note from Notion",
                 // TODO: make this redirect to the NewNotionNoteScreen
                 onTap: () {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const ReviewScreen()));
+                          builder: (context) => const ReviewScreen(
+                                questions: [],
+                              )));
                 })
           ],
         ));
@@ -51,8 +55,8 @@ class NotesScreen extends StatelessWidget {
 
 Widget _tile(BuildContext context, String title, DateTime importDate) {
   // tile styling
-  final header1 = TextStyle(fontSize: 20, fontWeight: FontWeight.w500);
-  final header2 = TextStyle(fontSize: 18);
+  final header1 = const TextStyle(fontSize: 20, fontWeight: FontWeight.w500);
+  final header2 = const TextStyle(fontSize: 18);
 
   // date and time calculations
   final DateTime now = DateTime.now();
@@ -79,7 +83,7 @@ Widget _tile(BuildContext context, String title, DateTime importDate) {
         .format(now.add(Duration(days: 7 - (durationSinceImport.inDays - 1))));
   } else {
     percent = 0.5;
-    nextDate = formatter.format(now.add(Duration(days: 1)));
+    nextDate = formatter.format(now.add(const Duration(days: 1)));
   }
 
   return Card(
@@ -88,7 +92,7 @@ Widget _tile(BuildContext context, String title, DateTime importDate) {
         trailing: CircularProgressIndicator(value: percent),
         children: <Widget>[
           Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
               child: Column(
                 children: <Widget>[
                   Row(
@@ -99,7 +103,7 @@ Widget _tile(BuildContext context, String title, DateTime importDate) {
                     ],
                   ),
                   Padding(
-                      padding: EdgeInsets.only(top: 15),
+                      padding: const EdgeInsets.only(top: 15),
                       child: Center(
                           child: FilledButton(
                               // TODO: fix button onPressed method to send context in order to populate the correct questions
@@ -108,7 +112,15 @@ Widget _tile(BuildContext context, String title, DateTime importDate) {
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) =>
-                                            const ReviewScreen()));
+                                            const ReviewScreen(
+                                              questions: [
+                                                'Who was the first President of the United States?',
+                                                'Who was the second President of the United States?',
+                                                'Who was the third President of the United States?',
+                                                'Who was the fourth President of the United States?',
+                                                'Who was the fifth President of the United States?',
+                                              ],
+                                            )));
                               },
                               child: const Text("Review"))))
                 ],

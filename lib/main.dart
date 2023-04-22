@@ -19,7 +19,7 @@ UserNote? userNote;
 
 void main() async {
   // DELETE THE FOLLOWING 5 LINES
-    await Hive.initFlutter();
+  await Hive.initFlutter();
   Hive.registerAdapter<UserNote>(UserNoteAdapter());
   Hive.registerAdapter<User>(UserAdapter());
   Hive.registerAdapter<Question>(QuestionAdapter());
@@ -29,10 +29,8 @@ void main() async {
   DateTime scheduledDate =
       DateTime(2023, 4, 22, 14, 21); // April 25, 2023 at 12:30 PM
   int notificationId = 1;
-  String title = 'Scheduled Notification';
+  String title = 'Time to Review!';
   String body = 'This is a scheduled notification for a specific day.';
-
-  WidgetsFlutterBinding.ensureInitialized();
 
   // Load the timezone data
   tz.initializeTimeZones();
@@ -48,13 +46,13 @@ void main() async {
   // Set the local location to the current device's timezone
   // tz.setLocalLocation(tz.getLocation(deviceTimeZone));
 
-  // DELETE THE FOLLOWING 2 LINES
-  print("Scheduling Notification for $scheduledDate");
-  scheduleNotification(scheduledDate, notificationId, title, body);
-
   WidgetsFlutterBinding.ensureInitialized();
   initNotifications();
   runApp(const Retainify());
+
+  // DELETE THE FOLLOWING 2 LINES
+  print("Scheduling Notification for $scheduledDate");
+  scheduleNotification(scheduledDate, notificationId, title, body);
 }
 
 class Retainify extends StatelessWidget {

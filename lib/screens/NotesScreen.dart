@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import "package:retainify/components/NotesListItem.dart";
+import 'package:retainify/components/CustomIcons.dart';
 import "package:retainify/screens/ReviewScreen.dart";
-import "package:retainify/components/NotesListItem.dart";
 import 'package:intl/intl.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
 class NotesScreen extends StatelessWidget {
   const NotesScreen({super.key});
@@ -16,8 +16,35 @@ class NotesScreen extends StatelessWidget {
           _tile(context, "Physics - Velocity and Displacement",
               DateTime(2023, 04, 01)),
           _tile(context, "Math - Pythagorean Theorem", DateTime(2023, 03, 20)),
-          _tile(context, "Math - Pythagorean Theorem", DateTime(2023, 03, 16))
-        ])));
+          _tile(context, "US History - The Jackson Era", DateTime(2023, 03, 16))
+        ])),
+        floatingActionButton: SpeedDial(
+          icon: Icons.add,
+          foregroundColor: Colors.white,
+          backgroundColor: Colors.blue,
+          children: [
+            SpeedDialChild(
+                child: Icon(Icons.edit),
+                label: "New Note",
+                // TODO: make this redirect to the NewNoteScreen
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const ReviewScreen()));
+                }),
+            SpeedDialChild(
+                child: Icon(CustomIcons.notion_logo),
+                label: "New Note from Notion",
+                // TODO: make this redirect to the NewNotionNoteScreen
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const ReviewScreen()));
+                })
+          ],
+        ));
   }
 }
 
@@ -54,7 +81,6 @@ Widget _tile(BuildContext context, String title, DateTime importDate) {
     nextDate = formatter.format(now.add(Duration(days: 1)));
   }
 
-  // TODO: fix button onPressed method to send context in order to populate the correct questions
   return Card(
     child: ExpansionTile(
         title: Text(title, style: header1),
@@ -75,6 +101,7 @@ Widget _tile(BuildContext context, String title, DateTime importDate) {
                       padding: EdgeInsets.only(top: 15),
                       child: Center(
                           child: FilledButton(
+                              // TODO: fix button onPressed method to send context in order to populate the correct questions
                               onPressed: () {
                                 Navigator.push(
                                     context,

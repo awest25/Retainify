@@ -6,14 +6,16 @@ class NotesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        child: TextButton(
-            onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const ReviewScreen()));
-            },
-            child: const Text("Review Screen")));
+    return Scaffold(
+        body: Container(
+            child: Center(
+                child: TextButton(
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const ReviewScreen()));
+                    },
+                    child: const Text("Review Screen")))));
   }
 }

@@ -13,21 +13,48 @@ class NotesScreen extends StatelessWidget {
         appBar: AppBar(title: const Text("Notes")),
         body: Container(
             child: ListView(children: [
-          _tile("Physics - Velocity and Displacement", 1),
-          _tile("Math - Pythagorean Theorem", 4)
+          _tile(context, "Physics - Velocity and Displacement",
+              DateTime(2023, 04, 01)),
+          _tile(context, "Math - Pythagorean Theorem", DateTime(2023, 03, 20)),
+          _tile(context, "Math - Pythagorean Theorem", DateTime(2023, 03, 16))
         ])));
   }
 }
 
-Widget _tile(String title, int daysSinceImport) {
+Widget _tile(BuildContext context, String title, DateTime importDate) {
+  // tile styling
   final header1 = TextStyle(fontSize: 20, fontWeight: FontWeight.w500);
   final header2 = TextStyle(fontSize: 18);
+
+  // date and time calculations
+  final DateTime now = DateTime.now();
+  final DateFormat formatter = DateFormat('MMMM d, yyyy');
+  final String nextDate;
+  String nextDateStr;
+  Duration durationSinceImport = now.difference(importDate);
   double percent = 0;
-  String nextDate = "";
 
-// TODO do this logic for next deadline and percent until that date
-  if (daysSinceImport > 35) {}
+  if (durationSinceImport.inDays > 35) {
+    percent = 1;
+    nextDate = "Done";
+  } else if (durationSinceImport.inDays > 16) {
+    percent = (durationSinceImport.inDays - 16) / 35;
+    nextDate = formatter.format(
+        now.add(Duration(days: 35 - (durationSinceImport.inDays - 16))));
+  } else if (durationSinceImport.inDays > 7) {
+    percent = (durationSinceImport.inDays - 7) / 16;
+    nextDate = formatter
+        .format(now.add(Duration(days: 16 - (durationSinceImport.inDays - 7))));
+  } else if (durationSinceImport.inDays > 1) {
+    percent = (durationSinceImport.inDays - 1);
+    nextDate = formatter
+        .format(now.add(Duration(days: 7 - (durationSinceImport.inDays - 1))));
+  } else {
+    percent = 0.5;
+    nextDate = formatter.format(now.add(Duration(days: 1)));
+  }
 
+  // TODO: fix button onPressed method to send context in order to populate the correct questions
   return Card(
     child: ExpansionTile(
         title: Text(title, style: header1),
@@ -35,23 +62,29 @@ Widget _tile(String title, int daysSinceImport) {
         children: <Widget>[
           Padding(
               padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              child: Column(
                 children: <Widget>[
-                  Text('Next Retainify', style: header2),
-                  Text(nextDate, style: header2),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text('Next Retainify', style: header2),
+                      Text(nextDate, style: header2),
+                    ],
+                  ),
+                  Padding(
+                      padding: EdgeInsets.only(top: 15),
+                      child: Center(
+                          child: FilledButton(
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const ReviewScreen()));
+                              },
+                              child: const Text("Review"))))
                 ],
               ))
         ]),
   );
 }
-
-// child: Center(
-//     child: TextButton(
-//         onPressed: () {
-//           Navigator.push(
-//               context,
-//               MaterialPageRoute(
-//                   builder: (context) => const ReviewScreen()));
-//         },
-//         child: const Text("Go to Review Screen")))

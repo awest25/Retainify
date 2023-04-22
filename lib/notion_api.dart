@@ -39,6 +39,7 @@ Future<List<NotionPage>> fetchPagesFromNotion(String databaseId) async {
 }
 
 // Fetch Block Children
+// Supported types: paragraph, callout, equation (BUT it just says "expression"), heading_3, heading_2, heading_1, code
 Future<String> fetchTextFromPage(String pageID) async {
   var headers = {
     'Authorization':

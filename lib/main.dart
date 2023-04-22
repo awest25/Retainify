@@ -5,9 +5,9 @@ import 'package:timezone/data/latest.dart' as tz;
 import 'package:flutter_native_timezone/flutter_native_timezone.dart';
 
 void main() async {
-  // DELETE THIS
+  // DELETE THE FOLLOWING 5 LINES
   DateTime scheduledDate =
-      DateTime(2023, 4, 22, 13, 38); // April 25, 2023 at 12:30 PM
+      DateTime(2023, 4, 22, 14, 21); // April 25, 2023 at 12:30 PM
   int notificationId = 1;
   String title = 'Scheduled Notification';
   String body = 'This is a scheduled notification for a specific day.';
@@ -28,7 +28,7 @@ void main() async {
   // Set the local location to the current device's timezone
   // tz.setLocalLocation(tz.getLocation(deviceTimeZone));
 
-  // DELETE THIS
+  // DELETE THE FOLLOWING 2 LINES
   print("Scheduling Notification for $scheduledDate");
   scheduleNotification(scheduledDate, notificationId, title, body);
 

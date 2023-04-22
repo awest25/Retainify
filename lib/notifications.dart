@@ -10,8 +10,11 @@ Future<void> initNotifications() async {
   const AndroidInitializationSettings androidInitializationSettings =
       AndroidInitializationSettings('@mipmap/ic_launcher');
 
-  final InitializationSettings initializationSettings =
-      InitializationSettings(android: androidInitializationSettings);
+  const DarwinInitializationSettings iosInitializationSettings =
+      DarwinInitializationSettings();
+
+  const InitializationSettings initializationSettings = InitializationSettings(
+      iOS: iosInitializationSettings, android: androidInitializationSettings);
 
   await flutterLocalNotificationsPlugin.initialize(initializationSettings);
 }
@@ -22,6 +25,10 @@ Future<void> scheduleNotification(
   if (scheduledDate.isBefore(DateTime.now())) {
     throw ArgumentError('The scheduledDate must be in the future.');
   }
+
+  // Create the notification details for iOS
+  const DarwinNotificationDetails iosNotificationDetails =
+      DarwinNotificationDetails();
 
   // Create the notification details for Android
   const AndroidNotificationDetails androidNotificationDetails =
@@ -34,8 +41,8 @@ Future<void> scheduleNotification(
   );
 
   // Create the platform-specific notification details
-  const NotificationDetails notificationDetails =
-      NotificationDetails(android: androidNotificationDetails);
+  const NotificationDetails notificationDetails = NotificationDetails(
+      iOS: iosNotificationDetails, android: androidNotificationDetails);
 
   // Schedule the notification
   await flutterLocalNotificationsPlugin.zonedSchedule(

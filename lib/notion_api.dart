@@ -39,6 +39,7 @@ Future<List<NotionPage>> fetchPagesFromNotion(String databaseId) async {
 }
 
 // Fetch Block Children
+// Supported types: paragraph, callout, equation (BUT it just says "expression"), heading_3, heading_2, heading_1, code
 Future<String> fetchTextFromPage(String pageID) async {
   var headers = {
     'Authorization':
@@ -54,14 +55,32 @@ Future<String> fetchTextFromPage(String pageID) async {
 
   String outputText = '';
 
-  for (var block in json.decode(response.body)['results']) {
-    Map<String, dynamic> blockMap = block;
-    MapEntry<String, dynamic> lastEntry = blockMap.entries.last;
+  // Supported types: paragraph, callout, equation (BUT it just says "expression"), heading_3, heading_2, heading_1, code
+  var supportedTypes = [
+    'paragraph',
+    'callout',
+    'heading_3',
+    'heading_2',
+    'heading_1',
+    'code'
+  ];
 
-    String lastKey = lastEntry.key;
-    for (var textItem in block[lastKey]['rich_text']) {
-      outputText += textItem['plain_text'];
+  for (var block in json.decode(response.body)['results']) {
+    String blockType = block['type'];
+    if (!supportedTypes.contains(blockType)) {
+      continue;
     }
+    if (blockType == 'equation') {
+      outputText += block[blockType]['expression'];
+      outputText += '\n';
+      continue;
+    }
+
+    for (var textItem in block[blockType]['rich_text']) {
+      outputText += textItem['plain_text'];
+      outputText += '\n';
+    }
+    outputText += '\n';
   }
 
   if (response.statusCode == 200) {

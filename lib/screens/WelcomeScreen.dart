@@ -11,13 +11,13 @@ class WelcomeScreen extends StatefulWidget {
 }
 
 class _WelcomeScreenState extends State<WelcomeScreen> {
-  TextEditingController _integrationTokenController = TextEditingController();
-  TextEditingController _databaseURLController = TextEditingController();
+  final TextEditingController _integrationTokenController =
+      TextEditingController();
+  final TextEditingController _databaseURLController = TextEditingController();
   String integrationToken = "";
   String databaseURL = "";
 
   String? parseDatabaseId(String url) {
-    print("incoming url: " + url);
     RegExp regExp = RegExp(r'https:\/\/www\.notion\.so\/([a-zA-Z0-9]{32}).*');
     Match match = regExp.firstMatch(url) as Match;
     if (match != null) {
@@ -35,7 +35,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
       Container(
           child: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
         SizedBox(height: MediaQuery.of(context).size.height * 0.15),
-        Icon(Icons.cloud_circle, color: Colors.red, size: 100),
+        const Icon(Icons.cloud_circle, color: Colors.red, size: 100),
         Text(
           "Retainify",
           style: title,
@@ -44,7 +44,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
           "Retain more, stress less.",
           style: header2,
         ),
-        SizedBox(
+        const SizedBox(
           height: 30,
         ),
         SizedBox(
@@ -62,7 +62,8 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
               ),
               children: [
                 Padding(
-                  padding: EdgeInsets.only(bottom: 20, left: 20, right: 20),
+                  padding:
+                      const EdgeInsets.only(bottom: 20, left: 20, right: 20),
                   child: Column(children: [
                     Text(
                       "1. Login to Notion and create a new integration 'Retainify'.\n\n2. Paste the Integration Token below:\n",
@@ -97,7 +98,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                       },
                     ),
                     Padding(
-                        padding: EdgeInsets.only(top: 10),
+                        padding: const EdgeInsets.only(top: 10),
                         child: FilledButton(
                             // TODO: save integration token and database url to hive db
                             onPressed: () {
@@ -107,9 +108,8 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                                       builder: (context) =>
                                           const NotesScreen()));
                               String? databaseId = parseDatabaseId(databaseURL);
-                              print(databaseId);
                             },
-                            child: Text("Done")))
+                            child: const Text("Done")))
                   ]),
                 )
               ],

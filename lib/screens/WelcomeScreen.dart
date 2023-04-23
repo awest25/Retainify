@@ -98,8 +98,8 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                       },
                     ),
                     Padding(
-                        padding: const EdgeInsets.only(top: 10),
-                        child: FilledButton(
+                        padding: EdgeInsets.only(top: 10),
+                        child: ElevatedButton(
                             // TODO: save integration token and database url to hive db
                             onPressed: () {
                               Navigator.pushReplacement(
@@ -109,13 +109,13 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                                           const NotesScreen()));
                               String? databaseId = parseDatabaseId(databaseURL);
                             },
-                            child: const Text("Done")))
+                            child: Text("Done")))
                   ]),
                 )
               ],
             ),
           ),
-        )
+        ),
       ]))
     ])));
   }

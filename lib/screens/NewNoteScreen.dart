@@ -31,18 +31,18 @@ class _NewNoteScreen extends State<NewNoteScreen> {
 
     return Scaffold(
       appBar: AppBar(title: const Text("New Note")),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
+      body: Center(
         child: Column(
           children: [
-            Padding(
-              padding: EdgeInsets.only(bottom: 8.0),
+            SizedBox(height: 20),
+            SizedBox(
+              width: MediaQuery.of(context).size.width * 0.85,
               child: TextField(
                 controller: _titleController,
                 autofocus: true,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
-                  hintText: 'Enter your note title',
+                  label: Text('Note Title'),
                 ),
                 onChanged: (text) {
                   notesTitle = text;
@@ -52,25 +52,25 @@ class _NewNoteScreen extends State<NewNoteScreen> {
                 },
               ),
             ),
-            TextField(
-              controller: _controller,
-              focusNode: contentFocusNode,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                hintText: 'Paste or enter your note content',
+            SizedBox(height: 10),
+            SizedBox(
+              width: MediaQuery.of(context).size.width * 0.85,
+              child: TextField(
+                focusNode: contentFocusNode,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText: 'Enter your note content',
+                ),
+                maxLines: 10,
+                onSubmitted: (text) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const NotesScreen(),
+                    ),
+                  );
+                },
               ),
-              maxLines: 10,
-              onChanged: (text) {
-                notes = text;
-              },
-              onSubmitted: (text) {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const NotesScreen(),
-                  ),
-                );
-              },
             ),
             const SizedBox(
                 height:

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import "package:retainify/global_styles.dart";
 import 'package:retainify/components/CustomIcons.dart';
+import 'package:retainify/screens/NotesScreen.dart';
 
 class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({super.key});
@@ -89,7 +90,13 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                           padding: EdgeInsets.only(top: 10),
                           child: FilledButton(
                               // TODO: save integration token and database url to hive db
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const NotesScreen()));
+                              },
                               child: Text("Done")))
                     ]),
                   )

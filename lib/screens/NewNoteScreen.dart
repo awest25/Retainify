@@ -12,7 +12,8 @@ import 'package:retainify/screens/LoadingScreen.dart';
 import 'package:retainify/dbfunc.dart';
 
 class NewNoteScreen extends StatefulWidget {
-  const NewNoteScreen({super.key});
+  final VoidCallback onImportCompleted;
+  NewNoteScreen({required this.onImportCompleted, super.key});
 
   @override
   _NewNoteScreen createState() => _NewNoteScreen();
@@ -125,6 +126,7 @@ class _NewNoteScreen extends State<NewNoteScreen> {
 
                                   saveQuestionListToDB(
                                       db_title, questionList, userNoteBox);
+                                  widget.onImportCompleted();
 
                                   Navigator.pushAndRemoveUntil(
                                       context,

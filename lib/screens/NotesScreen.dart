@@ -106,7 +106,13 @@ class _NotesScreenState extends State<NotesScreen> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const NewNoteScreen()));
+                          builder: (context) => NewNoteScreen(
+                                onImportCompleted: () {
+                                  setState(() {
+                                    // This will force the parent widget to rebuild and update the UI
+                                  });
+                                },
+                              )));
                 }),
             SpeedDialChild(
                 child: const Icon(CustomIcons.notion_logo),

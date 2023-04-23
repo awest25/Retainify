@@ -3,6 +3,26 @@ import 'package:flutter_native_timezone/flutter_native_timezone.dart';
 import 'package:retainify/screens/NotesScreen.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import '../notifications.dart';
+import 'package:retainify/hivedb.dart';
+import 'package:retainify/hive_box_provider.dart';
+import 'package:retainify/cohere_api.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+
+Future<List<Question>> stringToQuestionList(String rawInput) async {
+  String questionString = await generateQuestions(rawInput);
+  // remove trailing newlines
+  questionString = questionString.trimRight();
+  List<String> questionList = questionString.split('\n');
+  // Filter out blank questions
+  questionList = questionList.where((question) => question.trim().isNotEmpty).toList();
+  List<Question> questionAnswerList = questionList
+      .map((question) => Question(
+            question: question,
+            answer: "thereisnoanswer",
+          ))
+      .toList();
+  return questionAnswerList;
+}
 
 class NewNoteScreen extends StatefulWidget {
   const NewNoteScreen({super.key});
@@ -28,6 +48,11 @@ class _NewNoteScreen extends State<NewNoteScreen> {
   @override
   Widget build(BuildContext context) {
     final FocusNode contentFocusNode = FocusNode();
+    final TextEditingController titleController = TextEditingController();
+    final TextEditingController contentController = TextEditingController();
+
+    HiveBoxProvider hiveBoxProvider = HiveBoxProvider();
+    Box<UserNote> userNoteBox = hiveBoxProvider.userNoteBox;
 
     return Scaffold(
       appBar: AppBar(title: const Text("New Note")),
@@ -38,7 +63,7 @@ class _NewNoteScreen extends State<NewNoteScreen> {
             SizedBox(
               width: MediaQuery.of(context).size.width * 0.85,
               child: TextField(
-                controller: _titleController,
+                controller: titleController,
                 autofocus: true,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
@@ -56,6 +81,7 @@ class _NewNoteScreen extends State<NewNoteScreen> {
             SizedBox(
               width: MediaQuery.of(context).size.width * 0.85,
               child: TextField(
+                controller: contentController,
                 focusNode: contentFocusNode,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
@@ -77,6 +103,29 @@ class _NewNoteScreen extends State<NewNoteScreen> {
                     8.0), // Add spacing between the text field and the button
             ElevatedButton(
               onPressed: () async {
+                String db_title = titleController.text;
+                String content = contentController.text;
+
+                if (db_title.isNotEmpty && content.isNotEmpty) {
+                  List<Question> questionList =
+                      await stringToQuestionList(content);
+
+                  UserNote newUserNote = UserNote(
+                    notes: [
+                      Note(
+                        pageName: db_title,
+                        pageId: DateTime.now().toString(),
+                        createdTime: DateTime.now(),
+                        questionAnswer: questionList,
+                        dateImported: DateTime.now(),
+                      ),
+                    ],
+                    createdNote: DateTime.now(),
+                    user: User(databaseId: "testUser"),
+                  );
+
+                  userNoteBox.add(newUserNote);
+
                 Navigator.pushAndRemoveUntil(
                     context,
                     MaterialPageRoute(
@@ -129,7 +178,7 @@ class _NewNoteScreen extends State<NewNoteScreen> {
                 scheduleNotification(scheduledDate2, 2, title, body2); // 7days
                 scheduleNotification(scheduledDate3, 3, title, body3); // 16days
                 scheduleNotification(scheduledDate4, 4, title, body4); // 35days
-              },
+              }},
               child: const Text('Submit'),
             ),
           ],

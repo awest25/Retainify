@@ -130,7 +130,7 @@ class NoteAdapter extends TypeAdapter<Note> {
     return Note(
       pageName: fields[6] as String,
       pageId: fields[7] as String,
-      dateImported: fields[8] as String,
+      dateImported: fields[8] as DateTime,
       createdTime: fields[9] as DateTime,
       questionAnswer: (fields[10] as List).cast<Question>(),
     );

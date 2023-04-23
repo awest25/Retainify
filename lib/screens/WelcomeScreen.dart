@@ -36,11 +36,11 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
           child: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
         SizedBox(height: MediaQuery.of(context).size.height * 0.15),
         const Icon(Icons.cloud_circle, color: Colors.red, size: 100),
-        Text(
+        const Text(
           "Retainify",
           style: title,
         ),
-        Text(
+        const Text(
           "Retain more, stress less.",
           style: header2,
         ),
@@ -56,7 +56,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                 CustomIcons.notion_logo,
                 color: Colors.black,
               ),
-              title: Text(
+              title: const Text(
                 "Get Started with Notion",
                 style: header3,
               ),
@@ -65,7 +65,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                   padding:
                       const EdgeInsets.only(bottom: 20, left: 20, right: 20),
                   child: Column(children: [
-                    Text(
+                    const Text(
                       "1. Login to Notion and create a new integration 'Retainify'.\n\n2. Paste the Integration Token below:\n",
                       style: body,
                       textAlign: TextAlign.left,
@@ -81,7 +81,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                         integrationToken = text;
                       },
                     ),
-                    Text(
+                    const Text(
                       "\n3. Navigate to the Notion Database with your notes.\n\n4. Paste the Database URL below:\n",
                       style: body,
                       textAlign: TextAlign.left,

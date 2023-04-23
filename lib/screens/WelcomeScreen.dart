@@ -92,30 +92,30 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(),
                         hintText: 'Database URL',
-                        onChanged: (text) {
-                          databaseURL = text;
-                        },
                       ),
-                      Padding(
-                          padding: EdgeInsets.only(top: 10),
-                          child: ElevatedButton(
-                              // TODO: save integration token and database url to hive db
-                              onPressed: () {
-                                Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            const NotesScreen()));
-                                            String? databaseId = parseDatabaseId(databaseURL);
-                              },
-                              child: Text("Done")))
-                    ]),
-                  )
-                ],
-              ),
+                      onChanged: (text) {
+                        databaseURL = text;
+                      },
+                    ),
+                    Padding(
+                        padding: EdgeInsets.only(top: 10),
+                        child: ElevatedButton(
+                            // TODO: save integration token and database url to hive db
+                            onPressed: () {
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const NotesScreen()));
+                              String? databaseId = parseDatabaseId(databaseURL);
+                            },
+                            child: Text("Done")))
+                  ]),
+                )
+              ],
             ),
           ),
-        )
+        ),
       ]))
     ])));
   }

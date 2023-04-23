@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import "package:retainify/screens/NewNoteNotion.dart";
 import "package:retainify/global_styles.dart";
+import 'package:retainify/screens/NewNoteScreen.dart';
 
 class NotesScreen extends StatelessWidget {
   const NotesScreen({super.key});
@@ -35,9 +36,7 @@ class NotesScreen extends StatelessWidget {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const ReviewScreen(
-                                questions: [],
-                              )));
+                          builder: (context) => const NewNoteScreen()));
                 }),
             SpeedDialChild(
                 child: const Icon(CustomIcons.notion_logo),

@@ -36,7 +36,6 @@ class NotesScreen extends StatelessWidget {
                 child: const Icon(Icons.edit),
                 label: "New Note",
                 labelStyle: body,
-                // TODO: make this redirect to the NewNoteScreen
                 onTap: () {
                   Navigator.push(
                       context,

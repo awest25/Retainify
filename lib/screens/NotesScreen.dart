@@ -60,20 +60,32 @@ class NotesScreen extends StatelessWidget {
         appBar: AppBar(
           title: const Text("Retainify"),
         ),
-        // TODO: populate the body with info from the database (Note title, DateTime it was imported)
         body: Center(
             child: SizedBox(
                 width: MediaQuery.of(context).size.width * 0.9,
                 child: ListView(children: [
-                  SizedBox(height: 20),
-                  Container(
-                    child: Text("Notes", style: title),
-                    padding: EdgeInsets.only(left: 15),
-                  ),
-                  SizedBox(height: 20),
-                  Column(
-                    children: tileList,
-                  )
+                  const SizedBox(height: 20),
+                  if (tileList.isEmpty)
+                    Column(
+                      children: const [
+                        Text(
+                          "No notes yet!",
+                          style: TextStyle(
+                              fontSize: 35,
+                              color: Color.fromARGB(255, 133, 133, 133)),
+                        ),
+                        Text(
+                          "Click the + to get started",
+                          style: TextStyle(
+                              fontSize: 20,
+                              color: Color.fromARGB(255, 133, 133, 133)),
+                        ),
+                      ],
+                    )
+                  else
+                    Column(
+                      children: tileList,
+                    )
                 ]))),
         floatingActionButton: SpeedDial(
           icon: Icons.add,

@@ -8,6 +8,7 @@ import 'package:retainify/hivedb.dart';
 import 'package:retainify/hive_box_provider.dart';
 import 'package:retainify/cohere_api.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:retainify/screens/LoadingScreen.dart';
 
 Future<List<Question>> stringToQuestionList(String rawInput) async {
   String questionString = await generateQuestions(rawInput);
@@ -123,6 +124,13 @@ class _NewNoteScreen extends State<NewNoteScreen> {
                           ElevatedButton(
                               child: const Text('Submit'),
                               onPressed: () async {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          const LoadingScreen(),
+                                    ));
+
                                 print("onClick Triggered");
                                 String db_title = titleController.text;
                                 String content = contentController.text;

@@ -88,7 +88,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                       ),
                       Padding(
                           padding: EdgeInsets.only(top: 10),
-                          child: FilledButton(
+                          child: ElevatedButton(
                               // TODO: save integration token and database url to hive db
                               onPressed: () {
                                 Navigator.pushReplacement(

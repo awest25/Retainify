@@ -16,34 +16,32 @@ class _NewNoteNotion extends State<NewNoteNotion> {
   Widget build(BuildContext context) {
     final header1 = TextStyle(fontSize: 25);
     return Scaffold(
-        appBar: AppBar(),
+        appBar: AppBar(
+          title: Text("New Note from Notion"),
+        ),
         body: Center(
-            child: Container(
-                child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-              SizedBox(height: MediaQuery.of(context).size.height * 0.15),
-              Padding(
-                  padding: EdgeInsets.only(bottom: 20),
-                  child: Text("Select Note from Notion", style: header2)),
-              Padding(
-                padding: EdgeInsets.only(bottom: 20),
-                // TODO: populate titles from the results of the query
-                child: DropdownMenu(
-                    dropdownMenuEntries: [
-                      DropdownMenuEntry(value: "zero", label: "zero"),
-                      DropdownMenuEntry(value: "one", label: "one")
-                    ],
-                    onSelected: ((value) {
-                      _selectedValue = value;
-                    })),
-              ),
-              // TODO: PUSH to database based on selected dropdown entry
-              FilledButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: Text("Import"))
-            ]))));
+            child: Column(
+          children: [
+            SizedBox(height: 20),
+            // TODO: populate titles from the results of the query
+            DropdownMenu(
+                width: MediaQuery.of(context).size.width * 0.85,
+                label: Text("Select a Page"),
+                dropdownMenuEntries: [
+                  DropdownMenuEntry(value: "zero", label: "zero"),
+                  DropdownMenuEntry(value: "one", label: "one")
+                ],
+                onSelected: ((value) {
+                  _selectedValue = value;
+                })),
+            SizedBox(height: 10),
+            // TODO: PUSH to database based on selected dropdown entry
+            ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text("Import"))
+          ],
+        )));
   }
 }

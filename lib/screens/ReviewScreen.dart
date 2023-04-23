@@ -23,13 +23,23 @@ class _ReviewScreenState extends State<ReviewScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: theme.colorScheme.background,
-      appBar: AppBar(
-        title: const Text('Review Questions'),
-      ),
+      appBar: AppBar(),
       body: Padding(
         padding: const EdgeInsets.only(top: 30, right: 20, left: 20),
         child: Column(
           children: [
+            Container(
+              alignment: Alignment.centerLeft,
+              child: Text("Review", style: title),
+              padding: EdgeInsets.only(left: 15),
+            ),
+            SizedBox(height: 5),
+            Container(
+              alignment: Alignment.centerLeft,
+              child: Text("Page Title", style: header1),
+              padding: EdgeInsets.only(left: 15),
+            ),
+            SizedBox(height: 20),
             Card(
               shape: curvedShape,
               elevation: 2,

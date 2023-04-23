@@ -6,57 +6,34 @@ import 'package:retainify/notifications.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:flutter_native_timezone/flutter_native_timezone.dart';
 import 'package:retainify/dbfunc.dart';
+import 'package:retainify/hive_box_provider.dart';
 
-UserNote? userNote;
+final HiveBoxProvider hiveBoxProvider = HiveBoxProvider();
 
-// void initializeHive() async {
-//   await Hive.initFlutter();
-//   Hive.registerAdapter<UserNote>(UserNoteAdapter());
-//   Hive.registerAdapter<User>(UserAdapter());
-//   Hive.registerAdapter<Question>(QuestionAdapter());
-//   Hive.registerAdapter<Note>(NoteAdapter());
-//   var userNote = await Hive.openBox<UserNote>("UserNoteBox");
-// }
+// UserNote? userNote;
 
-
-void main() async {
-  // DELETE THE FOLLOWING 5 LINES
+Future<void> initializeHive() async {
   await Hive.initFlutter();
   Hive.registerAdapter<UserNote>(UserNoteAdapter());
   Hive.registerAdapter<User>(UserAdapter());
   Hive.registerAdapter<Question>(QuestionAdapter());
   Hive.registerAdapter<Note>(NoteAdapter());
-  var userNoteList = await Hive.openBox<UserNote>("UserNoteListBox");
+  // var userNote = await Hive.openBox<UserNote>("UserNoteBox");
+}
 
-  DateTime scheduledDate =
-      DateTime(2023, 4, 22, 14, 21); // April 25, 2023 at 12:30 PM
-  int notificationId = 1;
-  String title = 'Time to Review!';
-  String body = 'This is a scheduled notification for a specific day.';
-
+void main() async {
+  print("Running main");
   // Load the timezone data
   tz.initializeTimeZones();
 
-  // Get the current device's timezone
-  String deviceTimeZone;
-  try {
-    deviceTimeZone = await FlutterNativeTimezone.getLocalTimezone();
-  } catch (e) {
-    deviceTimeZone = 'Etc/UTC';
-  }
-
-  // Set the local location to the current device's timezone
-  // tz.setLocalLocation(tz.getLocation(deviceTimeZone));
-
+  print("Initializing Hive");
+  await initializeHive();
+  await hiveBoxProvider.initialize();
+  print("Finished initializing Hive");
   WidgetsFlutterBinding.ensureInitialized();
   initNotifications();
   runApp(const Retainify());
-
-  // DELETE THE FOLLOWING 2 LINES
-  print("Scheduling Notification for $scheduledDate");
-  scheduleNotification(scheduledDate, notificationId, title, body);
 }
-  
 
 class Retainify extends StatelessWidget {
   const Retainify({super.key});
@@ -64,6 +41,7 @@ class Retainify extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    print("Running Retainify");
     return MaterialApp(
       home: NotesScreen(),
       theme: ThemeData(

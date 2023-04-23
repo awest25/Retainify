@@ -8,50 +8,34 @@ import 'package:timezone/data/latest.dart' as tz;
 import 'package:flutter_native_timezone/flutter_native_timezone.dart';
 import 'package:retainify/cohere_api.dart';
 
-
 // Read HiveDB.
-  Future<UserNote> retrieveUserNote(UserNoteBox, int index) {
-    final userNote = userNoteListBox.getAt(index)!; 
-    return userNote;
-  }
-  // Write into HiveDb
-  // ...List.
-  void add(NotionPage page, List<String> questions) {
-    final userNote = UserNote(
-      createdNote: scheduledDate, 
-      notes: [
-        for(int i=0; i<cohere.length; i++)
-        {
-          Note(
-            pageName: page.name,
-            pageId: page.id, 
-            dateImported: DateTime.now(), 
-            questionAnswer: [
-              for (int i=0; i<cohere.length; i++){
-              Question(
-                question: "Insert AI Generated Question",
-                answer: "Insert AI generated Answer", 
-              );
-            },
-            ]
-            );
-        }
-      ], 
-      user: 
-      );
-    userNoteList.add(UserNote);
-  }
+Future<UserNote> retrieveUserNote(userNoteBox, int index) async {
+  final userNote = await userNoteBox.getAt(index);
+  return userNote!;
+}
 
-  Future<List<String>> addNotionPageToDB(NotionPage page) async {
-    // get the list of questions
-    String notes = await fetchTextFromPage(page.id);
-    String questions = await generateQuestions(notes); 
-    return questions.split('\n');
-  }
+// Write into HiveDb
+// ...List.
+void add(NotionPage page, List<String> questions, User user) {
+  List<Question> questionAnswerList = questions
+      .map((question) => Question(
+            question: question,
+            answer: "Insert AI generated Answer",
+          ))
+      .toList();
 
-  Future<List<String>> addNotesToDB(String text) async
-  {
-    // List<Question> questions;
-    String questionString = await generateQuestions(text); 
-    return questionString.split('\n');
-  }
+  final userNote = UserNote(
+    createdNote: DateTime.now(),
+    notes: [
+      for (int i = 0; i < questionAnswerList.length; i++)
+        Note(
+          pageName: page.name,
+          pageId: page.id,
+          dateImported: DateTime.now(),
+          createdTime: DateTime.now(),
+          questionAnswer: questionAnswerList,
+        )
+    ],
+    user: user,
+  );
+}

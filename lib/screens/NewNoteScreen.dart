@@ -1,5 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:retainify/screens/NotesScreen.dart';
+import 'package:retainify/hivedb.dart';
+import 'package:retainify/hive_box_provider.dart';
+import 'package:retainify/cohere_api.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+
+Future<List<Question>> stringToQuestionList(String rawInput) async {
+  // TODO: use the asynchronous function generateQuestions(content) which returns Future<String>
+  String questionString = await generateQuestions(rawInput);
+  // remove trailing newlines
+  questionString = questionString.trimRight();
+  List<String> questionList = questionString.split('\n');
+  List<Question> questionAnswerList = questionList
+      .map((question) => Question(
+            question: question,
+            answer: "nofuckinganswer",
+          ))
+      .toList();
+  return questionAnswerList;
+}
 
 class NewNoteScreen extends StatelessWidget {
   const NewNoteScreen({Key? key}) : super(key: key);
@@ -7,6 +26,11 @@ class NewNoteScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final FocusNode contentFocusNode = FocusNode();
+    final TextEditingController titleController = TextEditingController();
+    final TextEditingController contentController = TextEditingController();
+
+    HiveBoxProvider hiveBoxProvider = HiveBoxProvider();
+    Box<UserNote> userNoteBox = hiveBoxProvider.userNoteBox;
 
     return Scaffold(
       appBar: AppBar(title: const Text("New Note")),
@@ -17,6 +41,7 @@ class NewNoteScreen extends StatelessWidget {
             Padding(
               padding: EdgeInsets.only(bottom: 8.0),
               child: TextField(
+                controller: titleController,
                 autofocus: true,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
@@ -28,6 +53,7 @@ class NewNoteScreen extends StatelessWidget {
               ),
             ),
             TextField(
+              controller: contentController,
               focusNode: contentFocusNode,
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
@@ -47,13 +73,37 @@ class NewNoteScreen extends StatelessWidget {
                 height:
                     8.0), // Add spacing between the text field and the button
             ElevatedButton(
-              onPressed: () {
-                Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const NotesScreen(),
-                    ),
-                    (Route<dynamic> route) => false);
+              onPressed: () async {
+                String title = titleController.text;
+                String content = contentController.text;
+
+                if (title.isNotEmpty && content.isNotEmpty) {
+                  List<Question> questionList =
+                      await stringToQuestionList(content);
+
+                  UserNote newUserNote = UserNote(
+                    notes: [
+                      Note(
+                        pageName: title,
+                        pageId: DateTime.now().toString(),
+                        createdTime: DateTime.now(),
+                        questionAnswer: questionList,
+                        dateImported: DateTime.now(),
+                      ),
+                    ],
+                    createdNote: DateTime.now(),
+                    user: User(databaseId: "testUser"),
+                  );
+
+                  userNoteBox.add(newUserNote);
+
+                  Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const NotesScreen(),
+                      ),
+                      (Route<dynamic> route) => false);
+                }
               },
               child: const Text('Submit'),
             ),

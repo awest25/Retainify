@@ -105,3 +105,6 @@ flutter:
   - family: OpenSans
     fonts:
       - asset: fonts/OpenSans-Regular.ttf
+  
+  assets:
+  - "lib/assets/Retainify-logo.png"

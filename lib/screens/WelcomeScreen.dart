@@ -37,8 +37,12 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
               child:
                   Column(mainAxisAlignment: MainAxisAlignment.start, children: [
             SizedBox(height: MediaQuery.of(context).size.height * 0.10),
-            Icon(Icons.cloud_circle,
-                color: theme.colorScheme.primary, size: 100),
+            // Icon(Icons.cloud_circle,
+            //     color: theme.colorScheme.primary, size: 100),
+            Image(
+              image: AssetImage('lib/assets/Retainify-logo.png'),
+              width: 100,
+            ),
             const Text(
               "Retainify",
               style: title,

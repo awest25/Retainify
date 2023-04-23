@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:retainify/hivedb.dart';
 
 Future<String> generateQuestions(String notes) async {
   notes =
@@ -38,4 +39,21 @@ Future<String> generateQuestions(String notes) async {
     print(response.reasonPhrase);
     return "Error";
   }
+}
+
+Future<List<Question>> stringToQuestionList(String rawInput) async {
+  String questionString = await generateQuestions(rawInput);
+  // remove trailing newlines
+  questionString = questionString.trimRight();
+  List<String> questionList = questionString.split('\n');
+  // Filter out blank questions
+  questionList =
+      questionList.where((question) => question.trim().isNotEmpty).toList();
+  List<Question> questionAnswerList = questionList
+      .map((question) => Question(
+            question: question,
+            answer: "thereisnoanswer",
+          ))
+      .toList();
+  return questionAnswerList;
 }

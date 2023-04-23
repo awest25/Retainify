@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_native_timezone/flutter_native_timezone.dart';
+import 'package:retainify/cohere_api.dart';
 import "package:retainify/global_styles.dart";
+import 'package:retainify/hivedb.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import '../notifications.dart';
 import '../notion_api.dart';
+import 'package:retainify/dbfunc.dart';
+import 'package:retainify/hive_box_provider.dart';
+import 'package:hive/hive.dart';
 
 class NewNoteNotion extends StatefulWidget {
-  const NewNoteNotion({super.key});
+  final VoidCallback onImportCompleted;
+  NewNoteNotion({required this.onImportCompleted, super.key});
 
   @override
   _NewNoteNotion createState() => _NewNoteNotion();
@@ -14,6 +20,7 @@ class NewNoteNotion extends StatefulWidget {
 
 class _NewNoteNotion extends State<NewNoteNotion> {
   String? _selectedValue = null;
+  String? _selectedName = null;
   // TODO: query the notion database for a list of page titles which aren't already in our app database
 
   String databaseId = 'fe6780fd2f71484c97f87999290cc9d0';
@@ -48,6 +55,9 @@ class _NewNoteNotion extends State<NewNoteNotion> {
 
   @override
   Widget build(BuildContext context) {
+    HiveBoxProvider hiveBoxProvider = HiveBoxProvider();
+    Box<UserNote> userNoteBox = hiveBoxProvider.userNoteBox;
+
     final header1 = const TextStyle(fontSize: 25);
     return Scaffold(
       backgroundColor: theme.colorScheme.background,
@@ -91,7 +101,7 @@ class _NewNoteNotion extends State<NewNoteNotion> {
 
                           dropdownMenuItems = snapshot.data!
                               .map((page) => DropdownMenuItem(
-                                    value: page.name,
+                                    value: page.id,
                                     child: Text(page.name),
                                   ))
                               .toList();
@@ -102,6 +112,10 @@ class _NewNoteNotion extends State<NewNoteNotion> {
                             onChanged: (value) {
                               setState(() {
                                 _selectedValue = value as String?;
+                                _selectedName = snapshot.data!
+                                    .firstWhere((element) =>
+                                        element.id == _selectedValue)
+                                    .name;
                               });
                             },
                             hint: const Text("Select a Page"),
@@ -112,9 +126,21 @@ class _NewNoteNotion extends State<NewNoteNotion> {
                       // TODO: PUSH to database based on selected dropdown entry
                       ElevatedButton(
                         onPressed: () async {
-                          Navigator.pop(context);
+                          String selectedID = _selectedValue!;
+                          String selectedName = _selectedName!;
 
-                          // ...
+                          print("About add new note");
+                          String rawText = await fetchTextFromPage(selectedID);
+                          String questionString =
+                              await generateQuestions(rawText);
+                          List<Question> questionList =
+                              await stringToQuestionList(questionString);
+                          // Store string to database
+                          saveQuestionListToDB(
+                              selectedName, questionList, userNoteBox);
+                          // Call callback function
+                          widget.onImportCompleted();
+                          Navigator.pop(context);
                         },
                         child: const Text("Import"),
                         style: elevatedButtonStyle,

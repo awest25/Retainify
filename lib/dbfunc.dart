@@ -8,6 +8,26 @@ import 'package:timezone/data/latest.dart' as tz;
 import 'package:flutter_native_timezone/flutter_native_timezone.dart';
 import 'package:retainify/cohere_api.dart';
 
+// The used function
+void saveQuestionListToDB(
+    String db_title, List<Question> questionList, Box<UserNote> userNoteBox) {
+  UserNote newUserNote = UserNote(
+    notes: [
+      Note(
+        pageName: db_title,
+        pageId: DateTime.now().toString(),
+        createdTime: DateTime.now(),
+        questionAnswer: questionList,
+        dateImported: DateTime.now(),
+      ),
+    ],
+    createdNote: DateTime.now(),
+    user: User(databaseId: "testUser"),
+  );
+
+  userNoteBox.add(newUserNote);
+}
+
 // Read HiveDB.
 Future<UserNote> retrieveUserNote(userNoteBox, int index) async {
   final userNote = await userNoteBox.getAt(index);

@@ -22,6 +22,7 @@ class _ReviewScreenState extends State<ReviewScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: theme.colorScheme.background,
       appBar: AppBar(
         title: const Text('Review Questions'),
       ),
@@ -30,6 +31,7 @@ class _ReviewScreenState extends State<ReviewScreen> {
         child: Column(
           children: [
             Card(
+              shape: curvedShape,
               elevation: 2,
               child: Padding(
                   padding: EdgeInsets.all(20),
@@ -133,6 +135,7 @@ class _ReviewScreenState extends State<ReviewScreen> {
                             builder: (context) => const ReflectScreen()));
                   },
                   child: const Text('Finish'),
+                  style: elevatedButtonStyle,
                 ))
           ],
         ),

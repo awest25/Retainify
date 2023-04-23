@@ -13,7 +13,10 @@ class NotesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: const Text("Retainify")),
+        backgroundColor: theme.colorScheme.background,
+        appBar: AppBar(
+          title: const Text("Retainify"),
+        ),
         // TODO: populate the body with info from the database (Note title, DateTime it was imported)
         body: Center(
             child: SizedBox(
@@ -29,11 +32,12 @@ class NotesScreen extends StatelessWidget {
                 ]))),
         floatingActionButton: SpeedDial(
           icon: Icons.add,
-          foregroundColor: Colors.white,
-          backgroundColor: Colors.blue,
+          foregroundColor: theme.colorScheme.onPrimary,
+          backgroundColor: theme.colorScheme.primary,
           children: [
             SpeedDialChild(
                 child: const Icon(Icons.edit),
+                foregroundColor: theme.colorScheme.primary,
                 label: "New Note",
                 labelStyle: body,
                 onTap: () {
@@ -44,6 +48,7 @@ class NotesScreen extends StatelessWidget {
                 }),
             SpeedDialChild(
                 child: const Icon(CustomIcons.notion_logo),
+                foregroundColor: theme.colorScheme.primary,
                 label: "New Note from Notion",
                 labelStyle: body,
                 onTap: () {
@@ -88,6 +93,7 @@ Widget _tile(BuildContext context, String title, DateTime importDate) {
   return Padding(
       padding: EdgeInsets.only(bottom: 5),
       child: Card(
+        shape: curvedShape,
         elevation: 2,
         child: ExpansionTile(
             title: Text(title, style: header2),
@@ -128,6 +134,7 @@ Widget _tile(BuildContext context, String title, DateTime importDate) {
                                                   ],
                                                 )));
                                   },
+                                  style: elevatedButtonStyle,
                                   child: const Text("Review"))))
                     ],
                   ))

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_native_timezone/flutter_native_timezone.dart';
+import 'package:retainify/global_styles.dart';
 import 'package:retainify/screens/NotesScreen.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import '../notifications.dart';
@@ -30,6 +31,7 @@ class _NewNoteScreen extends State<NewNoteScreen> {
     final FocusNode contentFocusNode = FocusNode();
 
     return Scaffold(
+      backgroundColor: theme.colorScheme.background,
       appBar: AppBar(title: const Text("New Note")),
       body: Center(
         child: Column(
@@ -77,12 +79,7 @@ class _NewNoteScreen extends State<NewNoteScreen> {
                     8.0), // Add spacing between the text field and the button
             ElevatedButton(
               onPressed: () async {
-                Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const NotesScreen(),
-                    ),
-                    (Route<dynamic> route) => false);
+                Navigator.pop(context);
 
                 DateTime now = DateTime.now();
 
@@ -131,6 +128,7 @@ class _NewNoteScreen extends State<NewNoteScreen> {
                 scheduleNotification(scheduledDate4, 4, title, body4); // 35days
               },
               child: const Text('Submit'),
+              style: elevatedButtonStyle,
             ),
           ],
         ),

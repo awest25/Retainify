@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:retainify/global_styles.dart';
 import 'package:retainify/screens/NotesScreen.dart';
 
 class ReflectScreen extends StatefulWidget {
@@ -14,21 +15,20 @@ class _ReflectScreenState extends State<ReflectScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: theme.colorScheme.background,
       appBar: AppBar(
         title: const Text('Reflect'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          // mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            SizedBox(height: MediaQuery.of(context).size.height * 0.25),
             const Text(
               'How well did you remember the content?',
               textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
+              style: header1,
             ),
             const SizedBox(height: 32),
             Row(
@@ -86,12 +86,11 @@ class _ReflectScreenState extends State<ReflectScreen> {
             const SizedBox(height: 32),
             ElevatedButton(
               onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const NotesScreen()));
+                // Navigator.popUntil(
+                //     context, (() {ModalRoute.of(context).runtimeType == NotesScreen}));
               },
               child: const Text('Submit'),
+              style: elevatedButtonStyle,
             ),
           ],
         ),

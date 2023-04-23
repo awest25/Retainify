@@ -19,6 +19,7 @@ class _NewNoteNotion extends State<NewNoteNotion> {
   Widget build(BuildContext context) {
     final header1 = const TextStyle(fontSize: 25);
     return Scaffold(
+        backgroundColor: theme.colorScheme.background,
         appBar: AppBar(
           title: Text("New Note from Notion"),
         ),
@@ -39,56 +40,53 @@ class _NewNoteNotion extends State<NewNoteNotion> {
           SizedBox(height: 10),
           // TODO: PUSH to database based on selected dropdown entry
           ElevatedButton(
-              onPressed: () async {
-                Navigator.pop(context);
+            onPressed: () async {
+              Navigator.pop(context);
 
-                DateTime now = DateTime.now();
+              DateTime now = DateTime.now();
 
-                Duration oneMinute =
-                    const Duration(minutes: 1); // For debugging
+              Duration oneMinute = const Duration(minutes: 1); // For debugging
 
-                Duration oneDay = const Duration(days: 1);
-                Duration sevenDays = const Duration(days: 7);
-                Duration sixteenDays = const Duration(days: 16);
-                Duration thirtyFiveDays = const Duration(days: 35);
+              Duration oneDay = const Duration(days: 1);
+              Duration sevenDays = const Duration(days: 7);
+              Duration sixteenDays = const Duration(days: 16);
+              Duration thirtyFiveDays = const Duration(days: 35);
 
-                DateTime scheduledDate0 = now.add(oneMinute);
-                DateTime scheduledDate1 = now.add(oneDay);
-                DateTime scheduledDate2 = now.add(sevenDays);
-                DateTime scheduledDate3 = now.add(sixteenDays);
-                DateTime scheduledDate4 = now.add(thirtyFiveDays);
+              DateTime scheduledDate0 = now.add(oneMinute);
+              DateTime scheduledDate1 = now.add(oneDay);
+              DateTime scheduledDate2 = now.add(sevenDays);
+              DateTime scheduledDate3 = now.add(sixteenDays);
+              DateTime scheduledDate4 = now.add(thirtyFiveDays);
 
-                String title = 'Time to Review!';
-                String body1 =
-                    'This is your first review session for the topic!';
-                String body2 =
-                    'This is your second review session for the topic!';
-                String body3 =
-                    'This is your third review session for the topic!';
-                String body4 =
-                    'This is your final review session for the topic!';
+              String title = 'Time to Review!';
+              String body1 = 'This is your first review session for the topic!';
+              String body2 =
+                  'This is your second review session for the topic!';
+              String body3 = 'This is your third review session for the topic!';
+              String body4 = 'This is your final review session for the topic!';
 
-                // Load the timezone data
-                tz.initializeTimeZones();
+              // Load the timezone data
+              tz.initializeTimeZones();
 
-                // Get the current device's timezone
-                String deviceTimeZone;
-                try {
-                  deviceTimeZone =
-                      await FlutterNativeTimezone.getLocalTimezone();
-                } catch (e) {
-                  deviceTimeZone = 'Etc/UTC';
-                }
+              // Get the current device's timezone
+              String deviceTimeZone;
+              try {
+                deviceTimeZone = await FlutterNativeTimezone.getLocalTimezone();
+              } catch (e) {
+                deviceTimeZone = 'Etc/UTC';
+              }
 
-                WidgetsFlutterBinding.ensureInitialized();
-                initNotifications();
-                scheduleNotification(scheduledDate0, 0, title, body1); // 1min
-                scheduleNotification(scheduledDate1, 1, title, body1); // 1day
-                scheduleNotification(scheduledDate2, 2, title, body2); // 7days
-                scheduleNotification(scheduledDate3, 3, title, body3); // 16days
-                scheduleNotification(scheduledDate4, 4, title, body4); // 35days
-              },
-              child: const Text("Import"))
+              WidgetsFlutterBinding.ensureInitialized();
+              initNotifications();
+              scheduleNotification(scheduledDate0, 0, title, body1); // 1min
+              scheduleNotification(scheduledDate1, 1, title, body1); // 1day
+              scheduleNotification(scheduledDate2, 2, title, body2); // 7days
+              scheduleNotification(scheduledDate3, 3, title, body3); // 16days
+              scheduleNotification(scheduledDate4, 4, title, body4); // 35days
+            },
+            child: const Text("Import"),
+            style: elevatedButtonStyle,
+          ),
         ])));
   }
 }

@@ -66,16 +66,24 @@ class Retainify extends StatelessWidget {
       // home: NotesScreen(),
       home: const WelcomeScreen(),
       theme: ThemeData(
-        fontFamily: "OpenSans",
-        // textTheme: const TextTheme(
-        //   bodyMedium: TextStyle(
-        //     fontFamily: 'Open Sans',
-        //     fontSize: 16,
-        //     color: Colors.black,
-        //   ),
-        // ),
-        primarySwatch: Colors.blue,
-      ),
+          fontFamily: "OpenSans",
+          colorScheme: const ColorScheme(
+              // primary
+              primary: Color(0xff263b68),
+              onPrimary: Colors.white,
+              // secondary
+              secondary: Color(0xffc5ffed),
+              onSecondary: Color(0xff263b68),
+              // background
+              background: Color.fromARGB(255, 224, 226, 227),
+              onBackground: Color(0xff263b68),
+              // surface
+              surface: Colors.white,
+              onSurface: Color(0xff263b68),
+              // error
+              error: Colors.red,
+              onError: Colors.white,
+              brightness: Brightness.light)),
     );
   }
 }

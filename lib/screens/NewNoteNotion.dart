@@ -3,6 +3,7 @@ import 'package:flutter_native_timezone/flutter_native_timezone.dart';
 import "package:retainify/global_styles.dart";
 import 'package:timezone/data/latest.dart' as tz;
 import '../notifications.dart';
+import '../notion_api.dart';
 
 class NewNoteNotion extends StatefulWidget {
   const NewNoteNotion({super.key});
@@ -14,6 +15,26 @@ class NewNoteNotion extends StatefulWidget {
 class _NewNoteNotion extends State<NewNoteNotion> {
   String? _selectedValue = null;
   // TODO: query the notion database for a list of page titles which aren't already in our app database
+
+  String databaseId = 'fe6780fd2f71484c97f87999290cc9d0';
+  List<NotionPage> pages = <NotionPage>[];
+  List<String> pageTitles = <String>[];
+
+  Future<List<NotionPage>> getPages() async {
+    pages = await fetchPagesFromNotion(databaseId);
+    List<String> pageTitles = [];
+    for (var page in pages) {
+      pageTitles.add(page.name);
+    }
+
+    return pages;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getPages();
+  }
 
   @override
   Widget build(BuildContext context) {

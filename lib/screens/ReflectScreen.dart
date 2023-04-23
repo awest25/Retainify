@@ -86,8 +86,13 @@ class _ReflectScreenState extends State<ReflectScreen> {
             const SizedBox(height: 32),
             ElevatedButton(
               onPressed: () {
-                // Navigator.popUntil(
-                //     context, (() {ModalRoute.of(context).runtimeType == NotesScreen}));
+                Navigator.popUntil(context, ((route) {
+                  if (route.isFirst) {
+                    return true;
+                  } else {
+                    return route.settings.name == '/notes';
+                  }
+                }));
               },
               child: const Text('Submit'),
               style: elevatedButtonStyle,

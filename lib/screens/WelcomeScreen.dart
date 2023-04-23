@@ -53,6 +53,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
             SizedBox(
               width: MediaQuery.of(context).size.width * 0.85,
               child: Card(
+                shape: curvedShape,
                 elevation: 2,
                 child: ExpansionTile(
                   trailing: const Icon(
@@ -108,8 +109,10 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                                 Navigator.pushReplacement(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) =>
-                                            const NotesScreen()));
+                                      builder: (context) => const NotesScreen(),
+                                      settings:
+                                          RouteSettings(name: '/notes-screen'),
+                                    ));
                                 String? databaseId =
                                     parseDatabaseId(databaseURL);
                               },

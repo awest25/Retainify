@@ -31,7 +31,6 @@ class NotesScreen extends StatelessWidget {
                 child: const Icon(Icons.edit),
                 label: "New Note",
                 labelStyle: body,
-                // TODO: make this redirect to the NewNoteScreen
                 onTap: () {
                   Navigator.push(
                       context,
@@ -102,7 +101,6 @@ Widget _tile(BuildContext context, String title, DateTime importDate) {
                       padding: const EdgeInsets.only(top: 15),
                       child: Center(
                           child: FilledButton(
-                              // TODO: fix button onPressed method to send context in order to populate the correct questions
                               onPressed: () {
                                 Navigator.push(
                                     context,
@@ -110,6 +108,7 @@ Widget _tile(BuildContext context, String title, DateTime importDate) {
                                         builder: (context) =>
                                             const ReviewScreen(
                                               questions: [
+                                                // TODO: Fetch questions for particular topic and pass to ReviewScreen
                                                 'Who was the first President of the United States?',
                                                 'Who was the second President of the United States?',
                                                 'Who was the third President of the United States?',

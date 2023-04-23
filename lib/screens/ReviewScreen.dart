@@ -5,7 +5,12 @@ import 'package:retainify/screens/ReflectScreen.dart';
 
 class ReviewScreen extends StatefulWidget {
   final List<String> questions;
-  const ReviewScreen({super.key, required this.questions});
+  final String pageTitle;
+  const ReviewScreen({
+    super.key,
+    required this.questions,
+    required this.pageTitle,
+  });
 
   @override
   _ReviewScreenState createState() => _ReviewScreenState();
@@ -52,7 +57,7 @@ class _ReviewScreenState extends State<ReviewScreen> {
                 SizedBox(height: 5),
                 Container(
                   alignment: Alignment.centerLeft,
-                  child: Text("Page Title", style: header1),
+                  child: Text(widget.pageTitle, style: header1),
                   padding: EdgeInsets.only(left: 15),
                 ),
                 SizedBox(height: 20),

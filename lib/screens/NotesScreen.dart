@@ -184,6 +184,7 @@ Widget _tile(
                                             builder: (context) => ReviewScreen(
                                                   questions:
                                                       generateQuestionList(id),
+                                                  pageTitle: title,
                                                 )));
                                   },
                                   style: elevatedButtonStyle,

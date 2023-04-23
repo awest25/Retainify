@@ -9,6 +9,8 @@ import '../notion_api.dart';
 import 'package:retainify/dbfunc.dart';
 import 'package:retainify/hive_box_provider.dart';
 import 'package:hive/hive.dart';
+import 'package:retainify/screens/LoadingScreen.dart';
+import 'package:retainify/screens/NotesScreen.dart';
 
 class NewNoteNotion extends StatefulWidget {
   final VoidCallback onImportCompleted;
@@ -126,6 +128,11 @@ class _NewNoteNotion extends State<NewNoteNotion> {
                       // TODO: PUSH to database based on selected dropdown entry
                       ElevatedButton(
                         onPressed: () async {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const LoadingScreen(),
+                              ));
                           String selectedID = _selectedValue!;
                           String selectedName = _selectedName!;
 
@@ -140,7 +147,12 @@ class _NewNoteNotion extends State<NewNoteNotion> {
                               selectedName, questionList, userNoteBox);
                           // Call callback function
                           widget.onImportCompleted();
-                          Navigator.pop(context);
+                          Navigator.pushAndRemoveUntil(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const NotesScreen(),
+                              ),
+                              (Route<dynamic> route) => false);
                         },
                         child: const Text("Import"),
                         style: elevatedButtonStyle,

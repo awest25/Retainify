@@ -49,3 +49,4 @@ ios/Podfile.lock
 .gitignore
 ios/Runner/Base.lproj/Main.storyboard
 ios/Runner.xcodeproj/project.pbxproj
+ios/Runner/Base.lproj/Main.storyboard

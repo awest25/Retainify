@@ -7,9 +7,9 @@ import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import "package:retainify/screens/NewNoteNotion.dart";
 import "package:retainify/global_styles.dart";
 import 'package:retainify/screens/NewNoteScreen.dart';
-import 'package:retainify/dbfunc.dart';
 import 'package:hive/hive.dart';
 import 'package:retainify/hive_box_provider.dart';
+import 'package:retainify/screens/NewNoteScreen.dart';
 
 List<Widget> generateTileList(BuildContext context) {
   List<Widget> tileList = [];
@@ -23,15 +23,31 @@ List<Widget> generateTileList(BuildContext context) {
     // Loop through all Notes in the current UserNote
     for (Note note in userNote.notes) {
       // Create a _tile for each Note and add it to the tileList
-      tileList.add(_tile(context, note.pageName, note.dateImported));
+      tileList.add(_tile(context, note.pageName, note.dateImported, note.pageId));
     }
   }
-
   return tileList;
 }
 
+List<String> generateQuestionList(String id) {
+  List<String> outputQuestionList = [];
+  HiveBoxProvider hiveBoxProvider = HiveBoxProvider();
+
+  // Access the UserNote box using hiveBoxProvider instance
+  Box<UserNote> userNoteBox = hiveBoxProvider.userNoteBox;
+
+  for (UserNote userNote in userNoteBox.values) {
+    for (Note note in userNote.notes) {
+      if (note.pageId == id) {
+        outputQuestionList.addAll(note.questionAnswer.map((qa) => qa.question).toList());
+      }
+    }
+  }
+  return outputQuestionList;
+}
+
 class NotesScreen extends StatelessWidget {
-  const NotesScreen({super.key});
+  const NotesScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -39,11 +55,9 @@ class NotesScreen extends StatelessWidget {
 
     return Scaffold(
         appBar: AppBar(title: const Text("Notes")),
-        // TODO: populate the body with info from the database (Note title, DateTime it was imported)
         body: Container(
             child: ListView(
-                children:
-                    tileList)), // For each page in the database, add to a list of tiles and display them here dynamically
+                children: tileList)),
         floatingActionButton: SpeedDial(
           icon: Icons.add,
           foregroundColor: Colors.white,
@@ -53,7 +67,6 @@ class NotesScreen extends StatelessWidget {
                 child: const Icon(Icons.edit),
                 label: "New Note",
                 labelStyle: body,
-                // TODO: make this redirect to the NewNoteScreen
                 onTap: () {
                   Navigator.push(
                       context,
@@ -75,7 +88,7 @@ class NotesScreen extends StatelessWidget {
   }
 }
 
-Widget _tile(BuildContext context, String title, DateTime importDate) {
+Widget _tile(BuildContext context, String title, DateTime importDate, String id) {
   // date and time calculations
   final DateTime now = DateTime.now();
   final DateFormat formatter = DateFormat('MMMM d, yyyy');
@@ -130,14 +143,8 @@ Widget _tile(BuildContext context, String title, DateTime importDate) {
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) =>
-                                            const ReviewScreen(
-                                              questions: [
-                                                'Who was the first President of the United States?',
-                                                'Who was the second President of the United States?',
-                                                'Who was the third President of the United States?',
-                                                'Who was the fourth President of the United States?',
-                                                'Who was the fifth President of the United States?',
-                                              ],
+                                            ReviewScreen(
+                                              questions: generateQuestionList(id),
                                             )));
                               },
                               child: const Text("Review"))))

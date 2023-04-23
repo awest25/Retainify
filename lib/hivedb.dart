@@ -66,9 +66,8 @@ class Note extends HiveObject {
   Note({
     required this.pageName,
     required this.pageId,
-    // Set this to a April 22 3:49
-    // required this.dateImported,
-    this.dateImported = DateTime(2017, 9, 7, 17, 30),
+    // Set this to a April 22 3:49,
+    required this.dateImported,
     required this.createdTime,
     required this.questionAnswer,
   });

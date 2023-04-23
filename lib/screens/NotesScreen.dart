@@ -94,8 +94,8 @@ Widget _tile(BuildContext context, String title, DateTime importDate) {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      Text('Next Retainify', style: header2),
-                      Text(nextDate, style: header2),
+                      Text('Next Review', style: body),
+                      Text(nextDate, style: body),
                     ],
                   ),
                   Padding(

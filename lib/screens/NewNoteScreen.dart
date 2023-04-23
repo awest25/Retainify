@@ -4,8 +4,26 @@ import 'package:retainify/screens/NotesScreen.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import '../notifications.dart';
 
-class NewNoteScreen extends StatelessWidget {
-  const NewNoteScreen({Key? key}) : super(key: key);
+class NewNoteScreen extends StatefulWidget {
+  const NewNoteScreen({super.key});
+
+  @override
+  _NewNoteScreen createState() => _NewNoteScreen();
+}
+
+class _NewNoteScreen extends State<NewNoteScreen> {
+  TextEditingController _controller = TextEditingController();
+  TextEditingController _titleController = TextEditingController();
+
+  String notesTitle = '';
+  String notes = '';
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    _titleController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,23 +38,31 @@ class NewNoteScreen extends StatelessWidget {
             Padding(
               padding: EdgeInsets.only(bottom: 8.0),
               child: TextField(
+                controller: _titleController,
                 autofocus: true,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   hintText: 'Enter your note title',
                 ),
+                onChanged: (text) {
+                  notesTitle = text;
+                },
                 onSubmitted: (_) {
                   FocusScope.of(context).requestFocus(contentFocusNode);
                 },
               ),
             ),
             TextField(
+              controller: _controller,
               focusNode: contentFocusNode,
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
                 hintText: 'Paste or enter your note content',
               ),
               maxLines: 10,
+              onChanged: (text) {
+                notes = text;
+              },
               onSubmitted: (text) {
                 Navigator.push(
                   context,
@@ -76,13 +102,13 @@ class NewNoteScreen extends StatelessWidget {
 
                 String title = 'Time to Review!';
                 String body1 =
-                    'This is your first review session for the topic!';
+                    'This is your first review session for the topic "$notesTitle"!';
                 String body2 =
-                    'This is your second review session for the topic!';
+                    'This is your second review session for the topic "$notesTitle"!';
                 String body3 =
-                    'This is your third review session for the topic!';
+                    'This is your third review session for the topic "$notesTitle"!';
                 String body4 =
-                    'This is your final review session for the topic!';
+                    'This is your final review session for the topic "$notesTitle"!';
 
                 // Load the timezone data
                 tz.initializeTimeZones();

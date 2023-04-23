@@ -23,6 +23,11 @@ class NotesScreen extends StatelessWidget {
                 width: MediaQuery.of(context).size.width * 0.9,
                 child: ListView(children: [
                   SizedBox(height: 20),
+                  Container(
+                    child: Text("Notes", style: title),
+                    padding: EdgeInsets.only(left: 15),
+                  ),
+                  SizedBox(height: 20),
                   _tile(context, "Physics - Velocity and Displacement",
                       DateTime(2023, 04, 01)),
                   _tile(context, "Math - Pythagorean Theorem",

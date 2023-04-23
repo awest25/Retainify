@@ -44,6 +44,7 @@ class Retainify extends StatelessWidget {
   Widget build(BuildContext context) {
     print("Running Retainify");
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       // home: NotesScreen(),
       home: const WelcomeScreen(),
       theme: ThemeData(

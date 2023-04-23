@@ -9,7 +9,7 @@ class NewNoteNotion extends StatefulWidget {
 }
 
 class _NewNoteNotion extends State<NewNoteNotion> {
-  string? _selectedValue;
+  String? _selectedValue = null;
   // TODO: query the notion database for a list of page titles which aren't already in our app database
 
   @override
@@ -29,13 +29,21 @@ class _NewNoteNotion extends State<NewNoteNotion> {
               Padding(
                 padding: EdgeInsets.only(bottom: 20),
                 // TODO: populate titles from the results of the query
-                child: DropdownMenu(dropdownMenuEntries: [
-                  DropdownMenuEntry(value: "zero", label: "zero"),
-                  DropdownMenuEntry(value: "one", label: "one")
-                ]),
+                child: DropdownMenu(
+                    dropdownMenuEntries: [
+                      DropdownMenuEntry(value: "zero", label: "zero"),
+                      DropdownMenuEntry(value: "one", label: "one")
+                    ],
+                    onSelected: ((value) {
+                      _selectedValue = value;
+                    })),
               ),
               // TODO: PUSH to database based on selected dropdown entry
-              FilledButton(onPressed: () {}, child: Text("Import"))
+              FilledButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: Text("Import"))
             ]))));
   }
 }

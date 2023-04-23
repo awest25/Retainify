@@ -3,6 +3,9 @@ import 'package:retainify/components/CustomIcons.dart';
 import "package:retainify/screens/ReviewScreen.dart";
 import 'package:intl/intl.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import "package:retainify/screens/NewNoteNotion.dart";
+import "package:retainify/global_styles.dart";
+import 'package:retainify/screens/NewNoteScreen.dart';
 
 class NotesScreen extends StatelessWidget {
   const NotesScreen({super.key});
@@ -27,26 +30,22 @@ class NotesScreen extends StatelessWidget {
             SpeedDialChild(
                 child: const Icon(Icons.edit),
                 label: "New Note",
-                // TODO: make this redirect to the NewNoteScreen
+                labelStyle: body,
                 onTap: () {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const ReviewScreen(
-                                questions: [],
-                              )));
+                          builder: (context) => const NewNoteScreen()));
                 }),
             SpeedDialChild(
                 child: const Icon(CustomIcons.notion_logo),
                 label: "New Note from Notion",
-                // TODO: make this redirect to the NewNotionNoteScreen
+                labelStyle: body,
                 onTap: () {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const ReviewScreen(
-                                questions: [],
-                              )));
+                          builder: (context) => const NewNoteNotion()));
                 })
           ],
         ));
@@ -54,10 +53,6 @@ class NotesScreen extends StatelessWidget {
 }
 
 Widget _tile(BuildContext context, String title, DateTime importDate) {
-  // tile styling
-  final header1 = const TextStyle(fontSize: 20, fontWeight: FontWeight.w500);
-  final header2 = const TextStyle(fontSize: 18);
-
   // date and time calculations
   final DateTime now = DateTime.now();
   final DateFormat formatter = DateFormat('MMMM d, yyyy');
@@ -98,15 +93,14 @@ Widget _tile(BuildContext context, String title, DateTime importDate) {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      Text('Next Retainify', style: header2),
-                      Text(nextDate, style: header2),
+                      Text('Next Review', style: body),
+                      Text(nextDate, style: body),
                     ],
                   ),
                   Padding(
                       padding: const EdgeInsets.only(top: 15),
                       child: Center(
                           child: FilledButton(
-                              // TODO: fix button onPressed method to send context in order to populate the correct questions
                               onPressed: () {
                                 Navigator.push(
                                     context,
@@ -114,6 +108,7 @@ Widget _tile(BuildContext context, String title, DateTime importDate) {
                                         builder: (context) =>
                                             const ReviewScreen(
                                               questions: [
+                                                // TODO: Fetch questions for particular topic and pass to ReviewScreen
                                                 'Who was the first President of the United States?',
                                                 'Who was the second President of the United States?',
                                                 'Who was the third President of the United States?',

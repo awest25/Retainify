@@ -6,15 +6,16 @@ import 'package:retainify/cohere_api.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 Future<List<Question>> stringToQuestionList(String rawInput) async {
-  // TODO: use the asynchronous function generateQuestions(content) which returns Future<String>
   String questionString = await generateQuestions(rawInput);
   // remove trailing newlines
   questionString = questionString.trimRight();
   List<String> questionList = questionString.split('\n');
+  // Filter out blank questions
+  questionList = questionList.where((question) => question.trim().isNotEmpty).toList();
   List<Question> questionAnswerList = questionList
       .map((question) => Question(
             question: question,
-            answer: "nofuckinganswer",
+            answer: "thereisnoanswer",
           ))
       .toList();
   return questionAnswerList;

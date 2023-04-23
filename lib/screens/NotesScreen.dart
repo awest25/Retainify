@@ -1,39 +1,91 @@
 import 'package:flutter/material.dart';
 import 'package:retainify/components/CustomIcons.dart';
+import 'package:retainify/hivedb.dart';
 import "package:retainify/screens/ReviewScreen.dart";
 import 'package:intl/intl.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import "package:retainify/screens/NewNoteNotion.dart";
 import "package:retainify/global_styles.dart";
 import 'package:retainify/screens/NewNoteScreen.dart';
+import 'package:hive/hive.dart';
+import 'package:retainify/hive_box_provider.dart';
+import 'package:retainify/screens/NewNoteScreen.dart';
+
+List<Widget> generateTileList(BuildContext context) {
+  List<Widget> tileList = [];
+  HiveBoxProvider hiveBoxProvider = HiveBoxProvider();
+
+  // Access the UserNote box using hiveBoxProvider instance
+  Box<UserNote> userNoteBox = hiveBoxProvider.userNoteBox;
+
+  // Loop through all UserNotes in the box
+  for (UserNote userNote in userNoteBox.values) {
+    // Loop through all Notes in the current UserNote
+    for (Note note in userNote.notes) {
+      // Create a _tile for each Note and add it to the tileList
+      tileList
+          .add(_tile(context, note.pageName, note.dateImported, note.pageId));
+    }
+  }
+  return tileList;
+}
+
+List<String> generateQuestionList(String id) {
+  List<String> outputQuestionList = [];
+  HiveBoxProvider hiveBoxProvider = HiveBoxProvider();
+
+  // Access the UserNote box using hiveBoxProvider instance
+  Box<UserNote> userNoteBox = hiveBoxProvider.userNoteBox;
+
+  for (UserNote userNote in userNoteBox.values) {
+    for (Note note in userNote.notes) {
+      if (note.pageId == id) {
+        outputQuestionList
+            .addAll(note.questionAnswer.map((qa) => qa.question).toList());
+      }
+    }
+  }
+  return outputQuestionList;
+}
 
 class NotesScreen extends StatelessWidget {
-  const NotesScreen({super.key});
+  const NotesScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    List<Widget> tileList = generateTileList(context);
+
     return Scaffold(
         backgroundColor: theme.colorScheme.background,
         appBar: AppBar(
           title: const Text("Retainify"),
         ),
-        // TODO: populate the body with info from the database (Note title, DateTime it was imported)
         body: Center(
             child: SizedBox(
                 width: MediaQuery.of(context).size.width * 0.9,
                 child: ListView(children: [
-                  SizedBox(height: 20),
-                  Container(
-                    child: Text("Notes", style: title),
-                    padding: EdgeInsets.only(left: 15),
-                  ),
-                  SizedBox(height: 20),
-                  _tile(context, "Physics - Velocity and Displacement",
-                      DateTime(2023, 04, 01)),
-                  _tile(context, "Math - Pythagorean Theorem",
-                      DateTime(2023, 03, 20)),
-                  _tile(context, "US History - The Jackson Era",
-                      DateTime(2023, 03, 16))
+                  const SizedBox(height: 20),
+                  if (tileList.isEmpty)
+                    Column(
+                      children: const [
+                        Text(
+                          "No notes yet!",
+                          style: TextStyle(
+                              fontSize: 35,
+                              color: Color.fromARGB(255, 133, 133, 133)),
+                        ),
+                        Text(
+                          "Click the + to get started",
+                          style: TextStyle(
+                              fontSize: 20,
+                              color: Color.fromARGB(255, 133, 133, 133)),
+                        ),
+                      ],
+                    )
+                  else
+                    Column(
+                      children: tileList,
+                    )
                 ]))),
         floatingActionButton: SpeedDial(
           icon: Icons.add,
@@ -67,7 +119,8 @@ class NotesScreen extends StatelessWidget {
   }
 }
 
-Widget _tile(BuildContext context, String title, DateTime importDate) {
+Widget _tile(
+    BuildContext context, String title, DateTime importDate, String id) {
   // date and time calculations
   final DateTime now = DateTime.now();
   final DateFormat formatter = DateFormat('MMMM d, yyyy');
@@ -128,15 +181,10 @@ Widget _tile(BuildContext context, String title, DateTime importDate) {
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                            builder: (context) =>
-                                                const ReviewScreen(
-                                                  questions: [
-                                                    'Who was the first President of the United States?',
-                                                    'Who was the second President of the United States?',
-                                                    'Who was the third President of the United States?',
-                                                    'Who was the fourth President of the United States?',
-                                                    'Who was the fifth President of the United States?',
-                                                  ],
+                                            builder: (context) => ReviewScreen(
+                                                  questions:
+                                                      generateQuestionList(id),
+                                                  pageTitle: title,
                                                 )));
                                   },
                                   style: elevatedButtonStyle,

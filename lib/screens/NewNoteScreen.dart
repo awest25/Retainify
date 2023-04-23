@@ -131,12 +131,9 @@ class _NewNoteScreen extends State<NewNoteScreen> {
                                           const LoadingScreen(),
                                     ));
 
-                                print("onClick Triggered");
                                 String db_title = titleController.text;
                                 String content = contentController.text;
 
-                                print(db_title.isNotEmpty);
-                                print(content.isNotEmpty);
                                 if (db_title.isNotEmpty && content.isNotEmpty) {
                                   List<Question> questionList =
                                       await stringToQuestionList(content);

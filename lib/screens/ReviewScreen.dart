@@ -13,7 +13,6 @@ class ReviewScreen extends StatefulWidget {
 
 class _ReviewScreenState extends State<ReviewScreen> {
   int currentQuestionIndex = 0;
-  List<String> answers = ['', '', '', '', ''];
   var txtField = TextEditingController();
   bool _leftIsShow = false;
   bool _rightIsShow = true;
@@ -21,6 +20,11 @@ class _ReviewScreenState extends State<ReviewScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // TODO the next 2 declarations are not states and should be moved
+    int questionCount = widget.questions.length;
+    List<String> answers =
+        List<String>.generate(widget.questions.length, (index) => '');
+
     return Scaffold(
         backgroundColor: theme.colorScheme.background,
         appBar: AppBar(),
@@ -31,8 +35,19 @@ class _ReviewScreenState extends State<ReviewScreen> {
               children: [
                 Container(
                   alignment: Alignment.centerLeft,
-                  child: Text("Review", style: title),
-                  padding: EdgeInsets.only(left: 15),
+                  padding: EdgeInsets.only(left: 15, right: 15),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text("Review", style: title),
+                      Text(
+                        "$currentQuestionIndex / $questionCount",
+                        style: const TextStyle(
+                            fontSize: 25,
+                            color: Color.fromARGB(255, 133, 133, 133)),
+                      ),
+                    ],
+                  ),
                 ),
                 SizedBox(height: 5),
                 Container(
@@ -95,7 +110,8 @@ class _ReviewScreenState extends State<ReviewScreen> {
                                         if (currentQuestionIndex == 0) {
                                           _leftIsShow = false;
                                         }
-                                        if (currentQuestionIndex != 4) {
+                                        if (currentQuestionIndex !=
+                                            questionCount - 1) {
                                           _rightIsShow = true;
                                         }
                                       });
@@ -126,7 +142,8 @@ class _ReviewScreenState extends State<ReviewScreen> {
                                                     offset:
                                                         txtField.text.length));
                                         _leftIsShow = true;
-                                        if (currentQuestionIndex == 4) {
+                                        if (currentQuestionIndex ==
+                                            questionCount - 1) {
                                           _rightIsShow = false;
                                           _finishIsShow = true;
                                         } else {

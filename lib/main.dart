@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:retainify/screens/NotesScreen.dart';
+import 'package:retainify/screens/WelcomeScreen.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:retainify/hivedb.dart';
 import 'package:retainify/notifications.dart';
@@ -62,7 +63,8 @@ class Retainify extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: NotesScreen(),
+      // home: NotesScreen(),
+      home: WelcomeScreen(),
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),

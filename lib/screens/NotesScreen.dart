@@ -3,6 +3,8 @@ import 'package:retainify/components/CustomIcons.dart';
 import "package:retainify/screens/ReviewScreen.dart";
 import 'package:intl/intl.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import "package:retainify/screens/NewNoteNotion.dart";
+import "package:retainify/global_styles.dart";
 
 class NotesScreen extends StatelessWidget {
   const NotesScreen({super.key});
@@ -27,6 +29,7 @@ class NotesScreen extends StatelessWidget {
             SpeedDialChild(
                 child: const Icon(Icons.edit),
                 label: "New Note",
+                labelStyle: body,
                 // TODO: make this redirect to the NewNoteScreen
                 onTap: () {
                   Navigator.push(
@@ -39,14 +42,12 @@ class NotesScreen extends StatelessWidget {
             SpeedDialChild(
                 child: const Icon(CustomIcons.notion_logo),
                 label: "New Note from Notion",
-                // TODO: make this redirect to the NewNotionNoteScreen
+                labelStyle: body,
                 onTap: () {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const ReviewScreen(
-                                questions: [],
-                              )));
+                          builder: (context) => const NewNoteNotion()));
                 })
           ],
         ));
@@ -54,10 +55,6 @@ class NotesScreen extends StatelessWidget {
 }
 
 Widget _tile(BuildContext context, String title, DateTime importDate) {
-  // tile styling
-  final header1 = const TextStyle(fontSize: 20, fontWeight: FontWeight.w500);
-  final header2 = const TextStyle(fontSize: 18);
-
   // date and time calculations
   final DateTime now = DateTime.now();
   final DateFormat formatter = DateFormat('MMMM d, yyyy');

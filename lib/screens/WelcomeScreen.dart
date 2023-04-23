@@ -117,8 +117,6 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                                       settings:
                                           RouteSettings(name: '/notes-screen'),
                                     ));
-                                String? databaseId =
-                                    parseDatabaseId(databaseURL);
                               },
                               child: Text("Done"),
                               style: elevatedButtonStyle,

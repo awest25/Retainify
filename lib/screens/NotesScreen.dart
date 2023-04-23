@@ -48,9 +48,14 @@ List<String> generateQuestionList(String id) {
   return outputQuestionList;
 }
 
-class NotesScreen extends StatelessWidget {
+class NotesScreen extends StatefulWidget {
   const NotesScreen({Key? key}) : super(key: key);
 
+  @override
+  State<NotesScreen> createState() => _NotesScreenState();
+}
+
+class _NotesScreenState extends State<NotesScreen> {
   @override
   Widget build(BuildContext context) {
     List<Widget> tileList = generateTileList(context);
@@ -101,7 +106,13 @@ class NotesScreen extends StatelessWidget {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const NewNoteScreen()));
+                          builder: (context) => NewNoteScreen(
+                                onImportCompleted: () {
+                                  setState(() {
+                                    // This will force the parent widget to rebuild and update the UI
+                                  });
+                                },
+                              )));
                 }),
             SpeedDialChild(
                 child: const Icon(CustomIcons.notion_logo),
@@ -112,7 +123,12 @@ class NotesScreen extends StatelessWidget {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const NewNoteNotion()));
+                          builder: (context) =>
+                              NewNoteNotion(onImportCompleted: () {
+                                setState(() {
+                                  // This will force the parent widget to rebuild and update the UI
+                                });
+                              })));
                 })
           ],
         ));

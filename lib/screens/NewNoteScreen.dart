@@ -9,26 +9,11 @@ import 'package:retainify/hive_box_provider.dart';
 import 'package:retainify/cohere_api.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:retainify/screens/LoadingScreen.dart';
-
-Future<List<Question>> stringToQuestionList(String rawInput) async {
-  String questionString = await generateQuestions(rawInput);
-  // remove trailing newlines
-  questionString = questionString.trimRight();
-  List<String> questionList = questionString.split('\n');
-  // Filter out blank questions
-  questionList =
-      questionList.where((question) => question.trim().isNotEmpty).toList();
-  List<Question> questionAnswerList = questionList
-      .map((question) => Question(
-            question: question,
-            answer: "thereisnoanswer",
-          ))
-      .toList();
-  return questionAnswerList;
-}
+import 'package:retainify/dbfunc.dart';
 
 class NewNoteScreen extends StatefulWidget {
-  const NewNoteScreen({super.key});
+  final VoidCallback onImportCompleted;
+  NewNoteScreen({required this.onImportCompleted, super.key});
 
   @override
   _NewNoteScreen createState() => _NewNoteScreen();
@@ -139,21 +124,9 @@ class _NewNoteScreen extends State<NewNoteScreen> {
                                       await stringToQuestionList(content);
                                   print("questionList populated");
 
-                                  UserNote newUserNote = UserNote(
-                                    notes: [
-                                      Note(
-                                        pageName: db_title,
-                                        pageId: DateTime.now().toString(),
-                                        createdTime: DateTime.now(),
-                                        questionAnswer: questionList,
-                                        dateImported: DateTime.now(),
-                                      ),
-                                    ],
-                                    createdNote: DateTime.now(),
-                                    user: User(databaseId: "testUser"),
-                                  );
-
-                                  userNoteBox.add(newUserNote);
+                                  saveQuestionListToDB(
+                                      db_title, questionList, userNoteBox);
+                                  widget.onImportCompleted();
 
                                   Navigator.pushAndRemoveUntil(
                                       context,

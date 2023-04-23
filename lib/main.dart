@@ -64,8 +64,16 @@ class Retainify extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       // home: NotesScreen(),
-      home: WelcomeScreen(),
+      home: const WelcomeScreen(),
       theme: ThemeData(
+        fontFamily: "OpenSans",
+        // textTheme: const TextTheme(
+        //   bodyMedium: TextStyle(
+        //     fontFamily: 'Open Sans',
+        //     fontSize: 16,
+        //     color: Colors.black,
+        //   ),
+        // ),
         primarySwatch: Colors.blue,
       ),
     );

@@ -13,15 +13,20 @@ class NotesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: const Text("Notes")),
+        appBar: AppBar(title: const Text("Retainify")),
         // TODO: populate the body with info from the database (Note title, DateTime it was imported)
-        body: Container(
-            child: ListView(children: [
-          _tile(context, "Physics - Velocity and Displacement",
-              DateTime(2023, 04, 01)),
-          _tile(context, "Math - Pythagorean Theorem", DateTime(2023, 03, 20)),
-          _tile(context, "US History - The Jackson Era", DateTime(2023, 03, 16))
-        ])),
+        body: Center(
+            child: SizedBox(
+                width: MediaQuery.of(context).size.width * 0.9,
+                child: ListView(children: [
+                  SizedBox(height: 20),
+                  _tile(context, "Physics - Velocity and Displacement",
+                      DateTime(2023, 04, 01)),
+                  _tile(context, "Math - Pythagorean Theorem",
+                      DateTime(2023, 03, 20)),
+                  _tile(context, "US History - The Jackson Era",
+                      DateTime(2023, 03, 16))
+                ]))),
         floatingActionButton: SpeedDial(
           icon: Icons.add,
           foregroundColor: Colors.white,
@@ -57,7 +62,6 @@ Widget _tile(BuildContext context, String title, DateTime importDate) {
   final DateTime now = DateTime.now();
   final DateFormat formatter = DateFormat('MMMM d, yyyy');
   final String nextDate;
-  String nextDateStr;
   Duration durationSinceImport = now.difference(importDate);
   double percent = 0;
 
@@ -81,45 +85,52 @@ Widget _tile(BuildContext context, String title, DateTime importDate) {
     nextDate = formatter.format(now.add(const Duration(days: 1)));
   }
 
-  return Card(
-    child: ExpansionTile(
-        title: Text(title, style: header1),
-        trailing: CircularProgressIndicator(value: percent),
-        children: <Widget>[
-          Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-              child: Column(
-                children: <Widget>[
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  return Padding(
+      padding: EdgeInsets.only(bottom: 5),
+      child: Card(
+        elevation: 2,
+        child: ExpansionTile(
+            title: Text(title, style: header2),
+            trailing: CircularProgressIndicator(
+              value: percent,
+              backgroundColor: Colors.grey[300],
+            ),
+            children: <Widget>[
+              Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                  child: Column(
                     children: <Widget>[
-                      Text('Next Review', style: body),
-                      Text(nextDate, style: body),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Text('Next Review', style: body),
+                          Text(nextDate, style: body),
+                        ],
+                      ),
+                      Padding(
+                          padding: const EdgeInsets.only(top: 15),
+                          child: Center(
+                              child: ElevatedButton(
+                                  // TODO: fix button onPressed method to send context in order to populate the correct questions
+                                  onPressed: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                const ReviewScreen(
+                                                  questions: [
+                                                    'Who was the first President of the United States?',
+                                                    'Who was the second President of the United States?',
+                                                    'Who was the third President of the United States?',
+                                                    'Who was the fourth President of the United States?',
+                                                    'Who was the fifth President of the United States?',
+                                                  ],
+                                                )));
+                                  },
+                                  child: const Text("Review"))))
                     ],
-                  ),
-                  Padding(
-                      padding: const EdgeInsets.only(top: 15),
-                      child: Center(
-                          child: FilledButton(
-                              onPressed: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            const ReviewScreen(
-                                              questions: [
-                                                // TODO: Fetch questions for particular topic and pass to ReviewScreen
-                                                'Who was the first President of the United States?',
-                                                'Who was the second President of the United States?',
-                                                'Who was the third President of the United States?',
-                                                'Who was the fourth President of the United States?',
-                                                'Who was the fifth President of the United States?',
-                                              ],
-                                            )));
-                              },
-                              child: const Text("Review"))))
-                ],
-              ))
-        ]),
-  );
+                  ))
+            ]),
+      ));
 }

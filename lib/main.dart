@@ -17,6 +17,7 @@ UserNote? userNote;
 //   var userNote = await Hive.openBox<UserNote>("UserNoteBox");
 // }
 
+
 void main() async {
   // DELETE THE FOLLOWING 5 LINES
   await Hive.initFlutter();
@@ -24,7 +25,7 @@ void main() async {
   Hive.registerAdapter<User>(UserAdapter());
   Hive.registerAdapter<Question>(QuestionAdapter());
   Hive.registerAdapter<Note>(NoteAdapter());
-  var userNote = await Hive.openBox<UserNote>("UserNoteBox");
+  var userNoteList = await Hive.openBox<UserNote>("UserNoteListBox");
 
   DateTime scheduledDate =
       DateTime(2023, 4, 22, 14, 21); // April 25, 2023 at 12:30 PM
@@ -56,6 +57,36 @@ void main() async {
   initNotifications();
   runApp(const Retainify());
 }
+  // Write into HiveDb
+  // ...List.
+  add() {
+    final userNote = UserNote(
+      createdNote: scheduledDate, 
+      notes: [
+        for(int i=0; i<cohere.length; i++)
+        {
+          Note(
+            pageName: "Insert Notion Page name",
+            pageId: "Page ID", 
+            dateImported: DateTime.now(), 
+            questionAnswer: [
+              for (int i=0; i<cohere.length; i++){
+              Question(
+                question: "Insert AI Generated Question",
+                answer: "Insert AI generated Answer", 
+              );
+            },
+            ]
+            );
+        }
+      ], 
+      user: 
+      );
+    userNoteList.add(UserNote);
+  }
+  // Read 
+  // final userNote = userNoteListBox.getAt(index)!;
+  // userNote.DateTime.toString()
 
 class Retainify extends StatelessWidget {
   const Retainify({super.key});

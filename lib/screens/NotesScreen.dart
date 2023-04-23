@@ -23,7 +23,8 @@ List<Widget> generateTileList(BuildContext context) {
     // Loop through all Notes in the current UserNote
     for (Note note in userNote.notes) {
       // Create a _tile for each Note and add it to the tileList
-      tileList.add(_tile(context, note.pageName, note.dateImported, note.pageId));
+      tileList
+          .add(_tile(context, note.pageName, note.dateImported, note.pageId));
     }
   }
   return tileList;
@@ -39,7 +40,8 @@ List<String> generateQuestionList(String id) {
   for (UserNote userNote in userNoteBox.values) {
     for (Note note in userNote.notes) {
       if (note.pageId == id) {
-        outputQuestionList.addAll(note.questionAnswer.map((qa) => qa.question).toList());
+        outputQuestionList
+            .addAll(note.questionAnswer.map((qa) => qa.question).toList());
       }
     }
   }
@@ -54,21 +56,33 @@ class NotesScreen extends StatelessWidget {
     List<Widget> tileList = generateTileList(context);
 
     return Scaffold(
-        appBar: AppBar(title: const Text("Retainify")),
+        backgroundColor: theme.colorScheme.background,
+        appBar: AppBar(
+          title: const Text("Retainify"),
+        ),
+        // TODO: populate the body with info from the database (Note title, DateTime it was imported)
         body: Center(
             child: SizedBox(
                 width: MediaQuery.of(context).size.width * 0.9,
                 child: ListView(children: [
                   SizedBox(height: 20),
-                  Column(children: tileList,)
+                  Container(
+                    child: Text("Notes", style: title),
+                    padding: EdgeInsets.only(left: 15),
+                  ),
+                  SizedBox(height: 20),
+                  Column(
+                    children: tileList,
+                  )
                 ]))),
         floatingActionButton: SpeedDial(
           icon: Icons.add,
-          foregroundColor: Colors.white,
-          backgroundColor: Colors.blue,
+          foregroundColor: theme.colorScheme.onPrimary,
+          backgroundColor: theme.colorScheme.primary,
           children: [
             SpeedDialChild(
                 child: const Icon(Icons.edit),
+                foregroundColor: theme.colorScheme.primary,
                 label: "New Note",
                 labelStyle: body,
                 onTap: () {
@@ -79,6 +93,7 @@ class NotesScreen extends StatelessWidget {
                 }),
             SpeedDialChild(
                 child: const Icon(CustomIcons.notion_logo),
+                foregroundColor: theme.colorScheme.primary,
                 label: "New Note from Notion",
                 labelStyle: body,
                 onTap: () {
@@ -92,7 +107,8 @@ class NotesScreen extends StatelessWidget {
   }
 }
 
-Widget _tile(BuildContext context, String title, DateTime importDate, String id) {
+Widget _tile(
+    BuildContext context, String title, DateTime importDate, String id) {
   // date and time calculations
   final DateTime now = DateTime.now();
   final DateFormat formatter = DateFormat('MMMM d, yyyy');
@@ -123,6 +139,7 @@ Widget _tile(BuildContext context, String title, DateTime importDate, String id)
   return Padding(
       padding: EdgeInsets.only(bottom: 5),
       child: Card(
+        shape: curvedShape,
         elevation: 2,
         child: ExpansionTile(
             title: Text(title, style: header2),
@@ -152,11 +169,12 @@ Widget _tile(BuildContext context, String title, DateTime importDate, String id)
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                            builder: (context) =>
-                                                 ReviewScreen(
-                                                  questions: generateQuestionList(id),
+                                            builder: (context) => ReviewScreen(
+                                                  questions:
+                                                      generateQuestionList(id),
                                                 )));
                                   },
+                                  style: elevatedButtonStyle,
                                   child: const Text("Review"))))
                     ],
                   ))

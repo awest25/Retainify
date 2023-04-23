@@ -60,17 +60,8 @@ class NotesScreen extends StatelessWidget {
                 width: MediaQuery.of(context).size.width * 0.9,
                 child: ListView(children: [
                   SizedBox(height: 20),
-                  _tile(context, "Physics - Velocity and Displacement",
-                      DateTime(2023, 04, 01)),
-                  _tile(context, "Math - Pythagorean Theorem",
-                      DateTime(2023, 03, 20)),
-                  _tile(context, "US History - The Jackson Era",
-                      DateTime(2023, 03, 16))
+                  Column(children: tileList,)
                 ]))),
-        // appBar: AppBar(title: const Text("Notes")),
-        // body: Container(
-        //     child: ListView(
-        //         children: tileList)),
         floatingActionButton: SpeedDial(
           icon: Icons.add,
           foregroundColor: Colors.white,
@@ -162,14 +153,8 @@ Widget _tile(BuildContext context, String title, DateTime importDate, String id)
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                                const ReviewScreen(
-                                                  questions: [
-                                                    'Who was the first President of the United States?',
-                                                    'Who was the second President of the United States?',
-                                                    'Who was the third President of the United States?',
-                                                    'Who was the fourth President of the United States?',
-                                                    'Who was the fifth President of the United States?',
-                                                  ],
+                                                 ReviewScreen(
+                                                  questions: generateQuestionList(id),
                                                 )));
                                   },
                                   child: const Text("Review"))))

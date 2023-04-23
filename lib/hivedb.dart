@@ -73,5 +73,28 @@ class Note extends HiveObject {
     });
 } 
 
+// JSON Structure:
+/*
+UserNote = [
+  DateTime createdNote; 
+  List<Note> notes = [ [
+    String pageName; 
+    String pageId; 
+    String dateImported; 
+    DateTime createdTime; 
+    List<Question> questionAnswer = [[
+      String question; 
+      String answer; 
+    ], ...]
+    ], ...
+  ] 
+  User user = [
+    String databaseId; 
+  ]
+
+]
+*/
+
+
 
 // question_answer, comprised of an importTime and a list of question objects, this list is able to expand 

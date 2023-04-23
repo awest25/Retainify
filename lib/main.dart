@@ -5,6 +5,7 @@ import 'package:retainify/hivedb.dart';
 import 'package:retainify/notifications.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:flutter_native_timezone/flutter_native_timezone.dart';
+import 'package:retainify/dbfunc.dart';
 
 UserNote? userNote;
 
@@ -17,6 +18,7 @@ UserNote? userNote;
 //   var userNote = await Hive.openBox<UserNote>("UserNoteBox");
 // }
 
+
 void main() async {
   // DELETE THE FOLLOWING 5 LINES
   await Hive.initFlutter();
@@ -24,7 +26,7 @@ void main() async {
   Hive.registerAdapter<User>(UserAdapter());
   Hive.registerAdapter<Question>(QuestionAdapter());
   Hive.registerAdapter<Note>(NoteAdapter());
-  var userNote = await Hive.openBox<UserNote>("UserNoteBox");
+  var userNoteList = await Hive.openBox<UserNote>("UserNoteListBox");
 
   DateTime scheduledDate =
       DateTime(2023, 4, 22, 14, 21); // April 25, 2023 at 12:30 PM
@@ -54,6 +56,7 @@ void main() async {
   print("Scheduling Notification for $scheduledDate");
   scheduleNotification(scheduledDate, notificationId, title, body);
 }
+  
 
 class Retainify extends StatelessWidget {
   const Retainify({super.key});

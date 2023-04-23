@@ -5,6 +5,7 @@ import 'package:retainify/hivedb.dart';
 import 'package:retainify/notifications.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:flutter_native_timezone/flutter_native_timezone.dart';
+import 'package:retainify/dbfunc.dart';
 
 UserNote? userNote;
 
@@ -57,36 +58,7 @@ void main() async {
   initNotifications();
   runApp(const Retainify());
 }
-  // Write into HiveDb
-  // ...List.
-  add() {
-    final userNote = UserNote(
-      createdNote: scheduledDate, 
-      notes: [
-        for(int i=0; i<cohere.length; i++)
-        {
-          Note(
-            pageName: "Insert Notion Page name",
-            pageId: "Page ID", 
-            dateImported: DateTime.now(), 
-            questionAnswer: [
-              for (int i=0; i<cohere.length; i++){
-              Question(
-                question: "Insert AI Generated Question",
-                answer: "Insert AI generated Answer", 
-              );
-            },
-            ]
-            );
-        }
-      ], 
-      user: 
-      );
-    userNoteList.add(UserNote);
-  }
-  // Read 
-  // final userNote = userNoteListBox.getAt(index)!;
-  // userNote.DateTime.toString()
+  
 
 class Retainify extends StatelessWidget {
   const Retainify({super.key});

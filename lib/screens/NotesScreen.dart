@@ -3,22 +3,35 @@ import 'package:retainify/components/CustomIcons.dart';
 import "package:retainify/screens/ReviewScreen.dart";
 import 'package:intl/intl.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+// import file that defines retrieveFromDB()
 
 class NotesScreen extends StatelessWidget {
   const NotesScreen({super.key});
 
+  // List<_tile> retrieveTileList(int index) {
+  //  List<_tile> tileList; 
+  //   UserNote tile = retrieveUserNote(0);
+  //   for (int i = 0; i < tile.notes.length(); i++)
+  //   {
+  //     tileList.add(context, tile.notes.pageName, tile.notes.pageId);
+  //   }
+  //   return tileList;
+  // }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      var tileList = retrieveTileList();
         appBar: AppBar(title: const Text("Notes")),
         // TODO: populate the body with info from the database (Note title, DateTime it was imported)
         body: Container(
-            child: ListView(children: [
-          _tile(context, "Physics - Velocity and Displacement",
-              DateTime(2023, 04, 01)),
-          _tile(context, "Math - Pythagorean Theorem", DateTime(2023, 03, 20)),
-          _tile(context, "US History - The Jackson Era", DateTime(2023, 03, 16))
-        ])),
+            child: ListView(children: [ // children: retrieveTileList()
+          // _tile(context, "Physics - Velocity and Displacement",
+          //     DateTime(2023, 04, 01)),
+          // _tile(context, "Math - Pythagorean Theorem", DateTime(2023, 03, 20)),
+          // _tile(context, "US History - The Jackson Era", DateTime(2023, 03, 16))
+          tileList;
+        ])),// For each page in the database, add to a list of tiles and display them here dynamically
         floatingActionButton: SpeedDial(
           icon: Icons.add,
           foregroundColor: Colors.white,

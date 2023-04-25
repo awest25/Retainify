@@ -59,7 +59,6 @@ class _NotesScreenState extends State<NotesScreen> {
   @override
   Widget build(BuildContext context) {
     List<Widget> tileList = generateTileList(context);
-
     return Scaffold(
         backgroundColor: theme.colorScheme.background,
         appBar: AppBar(
@@ -69,7 +68,12 @@ class _NotesScreenState extends State<NotesScreen> {
             child: SizedBox(
                 width: MediaQuery.of(context).size.width * 0.9,
                 child: ListView(children: [
-                  const SizedBox(height: 20),
+                  SizedBox(height: 20),
+                  Container(
+                    child: Text("Notes", style: title),
+                    padding: EdgeInsets.only(left: 15),
+                  ),
+                  SizedBox(height: 20),
                   if (tileList.isEmpty)
                     Column(
                       children: const [
